@@ -1,4 +1,9 @@
-﻿title: Intro
+﻿title: Start
 ---
-This is an example of a Yarn Spinner script. Write your dialogue here!
+Narrator: Hellooooo.
+Narrator: is this working?
+-> I think so...
+    Narrator: ole ole
+-> Suuuu
+    Narrator: Get out!
 ===
