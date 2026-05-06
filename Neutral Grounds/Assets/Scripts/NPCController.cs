@@ -12,10 +12,13 @@ public class NPCController : MonoBehaviour
    public NPCState currentState;
    private Chair assignedChair;
    [SerializeField] private NavMeshAgent agent;
+   [SerializeField] private Transform tavernEntry;
+   [SerializeField] private Transform spawnPoint;
    public enum NPCState
     {
         Arrive,
         SearchingForChair,
+        WalkingToChair,
         WaitingForFood,
         Eating,
         LeavingHappy,
@@ -61,7 +64,7 @@ public class NPCController : MonoBehaviour
 
     private void Arrive()
     {
-        //walk through door
+        agent.SetDestination(tavernEntry.position);
         SearchForChair();
     }
 
@@ -87,7 +90,7 @@ public class NPCController : MonoBehaviour
             }
             
             agent.SetDestination(assignedChair.transform.position);
-            currentState = NPCState.WaitingForFood;
+            currentState = NPCState.WalkingToChair;
         }
         else
         {
@@ -144,13 +147,28 @@ public class NPCController : MonoBehaviour
         Debug.Log(data.characterName + " from the " + data.faction + "is leaving ANGRY");
 
         // decrease player rep with that faction
-        // walk outside (hem de fer navmesh albert epstein)
-        Destroy(gameObject, 3f);
+        agent.SetDestination(spawnPoint.position);
+        if(!agent.pathPending && agent.remainingDistance <= agent.stoppingDistance)
+        {
+             Destroy(gameObject, 3f);
+        }
     }
 
     // Update is called once per frame
     void Update()
     {
-        
+        if(currentState == NPCState.WalkingToChair)
+        {
+            if(!agent.pathPending && agent.remainingDistance <= agent.stoppingDistance)
+            {
+                currentState = NPCState.WaitingForFood;
+                WaitForFood();
+            }
+        }
+    }
+
+    private void WaitForFood()
+    {
+        throw new NotImplementedException();
     }
 }
