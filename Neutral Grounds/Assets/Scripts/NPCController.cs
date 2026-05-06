@@ -10,15 +10,28 @@ public class NPCController : MonoBehaviour
    [Header ("Current State (read only)")]
    public float currentPatience;
    public NPCState currentState;
+   private Chair assignedChair;
+   [SerializeField] private NavMeshAgent agent;
+   [SerializeField] private Transform tavernEntry;
+   [SerializeField] private Transform spawnPoint;
    public enum NPCState
     {
         Arrive,
-        SearchingForTable,
+        SearchingForChair,
+        WalkingToChair,
         WaitingForFood,
         Eating,
         LeavingHappy,
         LeavingAngry,
         TalkingToPlayer
+    }
+
+    private void Awake()
+    {
+          if(agent == null)
+        {
+            GetComponent<NavMeshAgent>();
+        }
     }
     private void Start()
     {
@@ -51,13 +64,40 @@ public class NPCController : MonoBehaviour
 
     private void Arrive()
     {
-        //walk through door
-        SearchForTable();
+        agent.SetDestination(tavernEntry.position);
+        SearchForChair();
     }
 
-    private void SearchForTable()
+    private void SearchForChair()
     {
-        currentState = NPCState.SearchingForTable;
+        currentState = NPCState.SearchingForChair;
+        ChairType preferredType = (data.faction == Faction.North) ? ChairType.Cold : ChairType.Warm;
+        
+        bool isInEnemyTerritory;
+        Chair assignedChair = ChairManager.Instance.FindBestAvailableChair(preferredType, out isInEnemyTerritory);
+
+        if(assignedChair != null)
+        {
+            if (isInEnemyTerritory)
+            {
+                Debug.Log($"{data.characterName} + hates this zone. Patience decreases.");
+                ModifyPatience(-20f);
+            }
+            else
+            {
+                Debug.Log($"{data.characterName} + likes this zone. Patience increases.");
+                ModifyPatience(20f);
+            }
+            
+            agent.SetDestination(assignedChair.transform.position);
+            currentState = NPCState.WalkingToChair;
+        }
+        else
+        {
+            Debug.Log($"Local lleno! {data.characterName} se va enfadado.");
+            currentState = NPCState.LeavingAngry;
+            GetAngryAndLeave();
+        }
     }
 
     //GAMEPLAY
@@ -107,13 +147,28 @@ public class NPCController : MonoBehaviour
         Debug.Log(data.characterName + " from the " + data.faction + "is leaving ANGRY");
 
         // decrease player rep with that faction
-        // walk outside (hem de fer navmesh albert epstein)
-        Destroy(gameObject, 3f);
+        agent.SetDestination(spawnPoint.position);
+        if(!agent.pathPending && agent.remainingDistance <= agent.stoppingDistance)
+        {
+             Destroy(gameObject, 3f);
+        }
     }
 
     // Update is called once per frame
     void Update()
     {
-        
+        if(currentState == NPCState.WalkingToChair)
+        {
+            if(!agent.pathPending && agent.remainingDistance <= agent.stoppingDistance)
+            {
+                currentState = NPCState.WaitingForFood;
+                WaitForFood();
+            }
+        }
+    }
+
+    private void WaitForFood()
+    {
+        throw new NotImplementedException();
     }
 }
