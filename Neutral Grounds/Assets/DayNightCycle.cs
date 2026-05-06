@@ -1,47 +1,59 @@
 using UnityEngine;
 
-public class DayNightBoxophobic : MonoBehaviour
+[ExecuteAlways]
+public class DayNightCycle : MonoBehaviour
 {
-    [Header("Referencias")]
-    public Light sunLight;
-    public Material skyboxMaterial;
+    [Header("Configuración del Tiempo")]
+    public float duracionSegundos = 300f;
+    [Range(0f, 1f)] public float progresoDia = 0f;
+    public bool elTiempoPasaSolo = true;
 
-    [Header("Configuración")]
-    public float dayDurationSeconds = 60f;
-    [Range(0, 1)] public float currentTime = 0.25f;
+    [Header("Ajustes del Sol")]
+    public Gradient colorDelSol; // Configura esto en el Inspector (Naranja -> Blanco -> Naranja)
+    public float intensidadMaxima = 1.3f;
+    public float intensidadMinima = 0f;
+
+    [Header("Valores de Atmosphere")]
+    public float grosorInicio = 0.6f;
+    public float grosorFin = 4f;
+
+    [Header("Referencias")]
+    public Light sol;
+    public Material skyboxMaterial; // El de image_6b93c9.png
 
     void Update()
     {
-        // 1. Lógica de tiempo
-        currentTime += Time.deltaTime / dayDurationSeconds;
-        if (currentTime >= 1) currentTime = 0;
-
-        // 2. Rotación física del sol (esto ya te funcionaba)
-        float sunRotation = currentTime * 360f - 90f;
-        sunLight.transform.rotation = Quaternion.Euler(sunRotation, 170f, 0f);
-
-        // 3. Lógica para el Material de Boxophobic
-        if (skyboxMaterial != null)
+        if (Application.isPlaying && elTiempoPasaSolo)
         {
-            // Calculamos qué tan "de día" es (1 = mediodía, 0 = noche)
-            float dayFactor = Mathf.Clamp01(Vector3.Dot(sunLight.transform.forward, Vector3.down));
-
-            // OPCIÓN A: Si usas dos Cubemaps (Día y Noche)
-            // Cambia "_CubemapTransition" por el nombre que salga en tu shader
-            skyboxMaterial.SetFloat("_CubemapTransition", 1 - dayFactor);
-
-            // OPCIÓN B: Ajustar la exposición (para que se oscurezca de noche)
-            // Ajusta los valores 0.2f (noche) y 1.2f (día) a tu gusto
-            float exposure = Mathf.Lerp(0.2f, 1.2f, dayFactor);
-            skyboxMaterial.SetFloat("_Exposure", exposure);
-            
-            // OPCIÓN C: Cambiar el tinte (opcional)
-            Color nightColor = new Color(0.1f, 0.1f, 0.2f);
-            Color dayColor = Color.white;
-            skyboxMaterial.SetColor("_Tint", Color.Lerp(nightColor, dayColor, dayFactor));
+            progresoDia += Time.deltaTime / duracionSegundos;
+            if (progresoDia >= 1f) progresoDia = 0f;
         }
 
-        // Ajustar intensidad de la luz para que no ilumine desde el suelo
-        sunLight.intensity = Mathf.Lerp(0, 1, Mathf.Clamp01(Vector3.Dot(sunLight.transform.forward, Vector3.down) * 5));
+        ActualizarIluminacion();
+    }
+
+    void OnValidate() => ActualizarIluminacion();
+
+    void ActualizarIluminacion()
+    {
+        if (sol == null || skyboxMaterial == null) return;
+
+        // 1. Rotación (Ciclo natural)
+        sol.transform.localRotation = Quaternion.Euler(progresoDia * 180, 170f, 0f);
+
+        // 2. Intensidad y Color dinámico
+        // Usamos el Dot product para saber si el sol mira hacia abajo (día) o arriba (noche)
+        float factorPunto = Mathf.Max(0, Vector3.Dot(sol.transform.forward, Vector3.down));
+        
+        sol.intensity = Mathf.Lerp(intensidadMinima, intensidadMaxima, factorPunto);
+        sol.color = colorDelSol.Evaluate(progresoDia);
+
+        // 3. Atmosphere Thickness (lo que ya tenías)
+        float grosorActual = Mathf.Lerp(grosorInicio, grosorFin, progresoDia);
+        skyboxMaterial.SetFloat("_AtmosphereThickness", grosorActual);
+
+        // 4. EL TRUCO: Actualizar la luz ambiental
+        // Esto hace que los objetos pillen el color de la skybox en cada frame
+        DynamicGI.UpdateEnvironment();
     }
 }
