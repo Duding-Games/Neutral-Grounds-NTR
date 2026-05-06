@@ -123,5 +123,8 @@
                 "yarn-comments"
             ]
         }
+    ],
+    "cSpell.words": [
+        "Mathf"
     ]
 }

@@ -10,15 +10,25 @@ public class NPCController : MonoBehaviour
    [Header ("Current State (read only)")]
    public float currentPatience;
    public NPCState currentState;
+   private Chair assignedChair;
+   [SerializeField] private NavMeshAgent agent;
    public enum NPCState
     {
         Arrive,
-        SearchingForTable,
+        SearchingForChair,
         WaitingForFood,
         Eating,
         LeavingHappy,
         LeavingAngry,
         TalkingToPlayer
+    }
+
+    private void Awake()
+    {
+          if(agent == null)
+        {
+            GetComponent<NavMeshAgent>();
+        }
     }
     private void Start()
     {
@@ -52,12 +62,39 @@ public class NPCController : MonoBehaviour
     private void Arrive()
     {
         //walk through door
-        SearchForTable();
+        SearchForChair();
     }
 
-    private void SearchForTable()
+    private void SearchForChair()
     {
-        currentState = NPCState.SearchingForTable;
+        currentState = NPCState.SearchingForChair;
+        ChairType preferredType = (data.faction == Faction.North) ? ChairType.Cold : ChairType.Warm;
+        
+        bool isInEnemyTerritory;
+        Chair assignedChair = ChairManager.Instance.FindBestAvailableChair(preferredType, out isInEnemyTerritory);
+
+        if(assignedChair != null)
+        {
+            if (isInEnemyTerritory)
+            {
+                Debug.Log($"{data.characterName} + hates this zone. Patience decreases.");
+                ModifyPatience(-20f);
+            }
+            else
+            {
+                Debug.Log($"{data.characterName} + likes this zone. Patience increases.");
+                ModifyPatience(20f);
+            }
+            
+            agent.SetDestination(assignedChair.transform.position);
+            currentState = NPCState.WaitingForFood;
+        }
+        else
+        {
+            Debug.Log($"Local lleno! {data.characterName} se va enfadado.");
+            currentState = NPCState.LeavingAngry;
+            GetAngryAndLeave();
+        }
     }
 
     //GAMEPLAY
