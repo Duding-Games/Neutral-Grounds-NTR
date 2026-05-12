@@ -48,6 +48,7 @@ public class NPCController : MonoBehaviour
     {
         if (data != null)
         {
+            GameManager.Instance.RegisterCustomer();
             InitializeNPC();
         }
         else
@@ -109,7 +110,7 @@ public class NPCController : MonoBehaviour
         }
         else
         {
-            Debug.Log($"Local lleno! {data.characterName} se va enfadado.");
+            Debug.Log($"The tavern is full! {data.characterName} leaves ANGRY.");
             GetAngryAndLeave();
         }
     }
@@ -246,6 +247,14 @@ public class NPCController : MonoBehaviour
             {
                 ReceiveOrder(FoodPreference.Organic);
             }
+        }
+    }
+
+    private void OnDestroy()
+    {
+        if (GameManager.Instance != null)
+        {
+            GameManager.Instance.UnregisterCustomer();
         }
     }
 }
