@@ -11,6 +11,13 @@ public class NPCController : MonoBehaviour
     public float currentPatience;
     public NPCState currentState;
 
+    [Header("Timers")]
+    [Tooltip("How much patience they lose per second while waiting")]
+    public float patienceLossPerSecond = 5f;
+    [Tooltip("How long they stay at the table to eat before leaving")]
+    public float timeToEat = 3f;
+    private float currentEatingTimer;
+
     private Chair assignedChair;
 
     [SerializeField] private NavMeshAgent agent;
@@ -123,24 +130,33 @@ public class NPCController : MonoBehaviour
         }
     }
 
-    public void ReceiveOrder(FoodPreference foodServed)
+   public void ReceiveOrder(FoodPreference foodServed)
     {
         if (currentState != NPCState.WaitingForFood)
         {
             return;
         }
 
+        MeshRenderer meshRenderer = GetComponent<MeshRenderer>();
+
         if (foodServed == data.foodPreference)
         {
-            Debug.Log("Correct food!\n" + data.characterName + " is enjoying their food");
+            Debug.Log("Correct food! " + data.characterName + " is enjoying their food");
             ModifyPatience(20f);
+            
+            if (meshRenderer != null) meshRenderer.material.color = Color.green;
+            
             currentState = NPCState.Eating;
+            currentEatingTimer = timeToEat; 
         }
         else
         {
-            Debug.Log("Wrong food!\n" + data.characterName + " is NOT enjoying their food");
-            ModifyPatience(-40f);
-            currentState = NPCState.Eating;
+            Debug.Log("Wrong food! " + data.characterName + " refuses to eat this!");
+            ModifyPatience(-40f); 
+            
+            if (meshRenderer != null) meshRenderer.material.color = Color.red;
+            
+            GetAngryAndLeave(); 
         }
     }
 
@@ -149,6 +165,23 @@ public class NPCController : MonoBehaviour
         currentState = NPCState.LeavingAngry;
 
         Debug.Log(data.characterName + " from the " + data.faction + " is leaving ANGRY");
+
+        if (assignedChair != null)
+        {
+            assignedChair.isOccupied = false;
+        }
+
+        if (spawnPoint != null)
+        {
+            agent.SetDestination(spawnPoint.position);
+        }
+    }
+
+    private void LeaveHappy()
+    {
+        currentState = NPCState.LeavingHappy;
+
+        Debug.Log(data.characterName + " finished eating and is leaving HAPPY!");
 
         if (assignedChair != null)
         {
@@ -176,7 +209,20 @@ public class NPCController : MonoBehaviour
             {
                 currentState = NPCState.WaitingForFood;
                 transform.position = assignedChair.transform.position;
-                WaitForFood();
+            }
+        }
+        else if (currentState == NPCState.WaitingForFood)
+        {
+            // Drain patience over time. If it hits 0, ModifyPatience handles the angry exit!
+            ModifyPatience(-patienceLossPerSecond * Time.deltaTime);
+        }
+        else if (currentState == NPCState.Eating)
+        {
+            // Countdown until they finish their food
+            currentEatingTimer -= Time.deltaTime;
+            if (currentEatingTimer <= 0)
+            {
+                LeaveHappy();
             }
         }
         else if (currentState == NPCState.LeavingAngry || currentState == NPCState.LeavingHappy)
@@ -188,7 +234,18 @@ public class NPCController : MonoBehaviour
         }
     }
 
-    private void WaitForFood()
+    private void OnMouseOver()
     {
+        if (currentState == NPCState.WaitingForFood)
+        {
+            if (Input.GetKeyDown(KeyCode.Alpha1))
+            {
+                ReceiveOrder(FoodPreference.Synthetic);
+            }
+            else if (Input.GetKeyDown(KeyCode.Alpha2))
+            {
+                ReceiveOrder(FoodPreference.Organic);
+            }
+        }
     }
 }

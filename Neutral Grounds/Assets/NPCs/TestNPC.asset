@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 681a1fe18de8efc479e922a9d465f6d0, type: 3}
   m_Name: TestNPC
   m_EditorClassIdentifier: 
-  characterName: John Dow
+  characterName: John Doe
   faction: 0
   foodPreference: 0
   maxPatience: 100
