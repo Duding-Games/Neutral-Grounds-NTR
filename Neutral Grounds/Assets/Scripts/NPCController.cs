@@ -1,20 +1,23 @@
 using System;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.AI;
+
 public class NPCController : MonoBehaviour
 {
-   [Header ("NPC Info")]
-   [Tooltip ("Drag custom NPC Data ScriptableObject here.")]
-   public NPCData data;
-   [Header ("Current State (read only)")]
-   public float currentPatience;
-   public NPCState currentState;
-   private Chair assignedChair;
-   [SerializeField] private NavMeshAgent agent;
-   [SerializeField] private Transform tavernEntry;
-   [SerializeField] private Transform spawnPoint;
-   public enum NPCState
+    [Header("NPC Info")]
+    public NPCData data;
+
+    [Header("Current State (read only)")]
+    public float currentPatience;
+    public NPCState currentState;
+
+    private Chair assignedChair;
+
+    [SerializeField] private NavMeshAgent agent;
+    [SerializeField] private Transform tavernEntry;
+    [SerializeField] public Transform spawnPoint;
+
+    public enum NPCState
     {
         Arrive,
         SearchingForChair,
@@ -28,14 +31,15 @@ public class NPCController : MonoBehaviour
 
     private void Awake()
     {
-          if(agent == null)
+        if (agent == null)
         {
-            GetComponent<NavMeshAgent>();
+            agent = GetComponent<NavMeshAgent>();
         }
     }
+
     private void Start()
     {
-        if(data != null)
+        if (data != null)
         {
             InitializeNPC();
         }
@@ -50,13 +54,11 @@ public class NPCController : MonoBehaviour
         currentPatience = data.maxPatience;
         currentState = NPCState.Arrive;
 
-        if(data.faction == Faction.North) 
+        if (data.faction == Faction.North)
         {
-            //aqui fem algo per diferenciarlos tipo canviar material o algo
         }
-        else if(data.faction == Faction.South) 
+        else if (data.faction == Faction.South)
         {
-            //aqui fem algo per diferenciarlos tipo canviar material o algo
         }
 
         Arrive();
@@ -64,43 +66,46 @@ public class NPCController : MonoBehaviour
 
     private void Arrive()
     {
-        agent.SetDestination(tavernEntry.position);
-        SearchForChair();
+        if (tavernEntry != null)
+        {
+            agent.SetDestination(tavernEntry.position);
+        }
+        else
+        {
+            SearchForChair();
+        }
     }
 
     private void SearchForChair()
     {
         currentState = NPCState.SearchingForChair;
         ChairType preferredType = (data.faction == Faction.North) ? ChairType.Cold : ChairType.Warm;
-        
-        bool isInEnemyTerritory;
-        Chair assignedChair = ChairManager.Instance.FindBestAvailableChair(preferredType, out isInEnemyTerritory);
 
-        if(assignedChair != null)
+        bool isInEnemyTerritory;
+        assignedChair = ChairManager.Instance.FindBestAvailableChair(preferredType, out isInEnemyTerritory);
+
+        if (assignedChair != null)
         {
             if (isInEnemyTerritory)
             {
-                Debug.Log($"{data.characterName} + hates this zone. Patience decreases.");
+                Debug.Log($"{data.characterName} hates this zone. Patience decreases.");
                 ModifyPatience(-20f);
             }
             else
             {
-                Debug.Log($"{data.characterName} + likes this zone. Patience increases.");
+                Debug.Log($"{data.characterName} likes this zone. Patience increases.");
                 ModifyPatience(20f);
             }
-            
+
             agent.SetDestination(assignedChair.transform.position);
             currentState = NPCState.WalkingToChair;
         }
         else
         {
             Debug.Log($"Local lleno! {data.characterName} se va enfadado.");
-            currentState = NPCState.LeavingAngry;
             GetAngryAndLeave();
         }
     }
-
-    //GAMEPLAY
 
     public void ModifyPatience(float amount)
     {
@@ -112,7 +117,7 @@ public class NPCController : MonoBehaviour
 
     private void CheckPatienceLevel()
     {
-        if(currentPatience <= 0 && currentState != NPCState.LeavingAngry)
+        if (currentPatience <= 0 && currentState != NPCState.LeavingAngry)
         {
             GetAngryAndLeave();
         }
@@ -125,7 +130,7 @@ public class NPCController : MonoBehaviour
             return;
         }
 
-        if(foodServed == data.foodPreference)
+        if (foodServed == data.foodPreference)
         {
             Debug.Log("Correct food!\n" + data.characterName + " is enjoying their food");
             ModifyPatience(20f);
@@ -139,36 +144,51 @@ public class NPCController : MonoBehaviour
         }
     }
 
-
     private void GetAngryAndLeave()
     {
         currentState = NPCState.LeavingAngry;
 
-        Debug.Log(data.characterName + " from the " + data.faction + "is leaving ANGRY");
+        Debug.Log(data.characterName + " from the " + data.faction + " is leaving ANGRY");
 
-        // decrease player rep with that faction
-        agent.SetDestination(spawnPoint.position);
-        if(!agent.pathPending && agent.remainingDistance <= agent.stoppingDistance)
+        if (assignedChair != null)
         {
-             Destroy(gameObject, 3f);
+            assignedChair.isOccupied = false;
+        }
+
+        if (spawnPoint != null)
+        {
+            agent.SetDestination(spawnPoint.position);
         }
     }
 
-    // Update is called once per frame
     void Update()
     {
-        if(currentState == NPCState.WalkingToChair)
+        if (currentState == NPCState.Arrive)
         {
-            if(!agent.pathPending && agent.remainingDistance <= agent.stoppingDistance)
+            if (!agent.pathPending && agent.remainingDistance <= agent.stoppingDistance)
+            {
+                SearchForChair();
+            }
+        }
+        else if (currentState == NPCState.WalkingToChair)
+        {
+            if (!agent.pathPending && agent.remainingDistance <= agent.stoppingDistance)
             {
                 currentState = NPCState.WaitingForFood;
+                transform.position = assignedChair.transform.position;
                 WaitForFood();
+            }
+        }
+        else if (currentState == NPCState.LeavingAngry || currentState == NPCState.LeavingHappy)
+        {
+            if (!agent.pathPending && agent.remainingDistance <= agent.stoppingDistance)
+            {
+                Destroy(gameObject);
             }
         }
     }
 
     private void WaitForFood()
     {
-        throw new NotImplementedException();
     }
 }
