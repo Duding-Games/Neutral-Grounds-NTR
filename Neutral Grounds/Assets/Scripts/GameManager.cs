@@ -2,6 +2,7 @@ using UnityEngine;
 using UnityEngine.UI; 
 using TMPro; 
 using System.Collections;
+using Yarn.Unity;
 
 public class GameManager : MonoBehaviour
 {
@@ -11,6 +12,10 @@ public class GameManager : MonoBehaviour
 
     [Header("Script References")]
     public DayNightCycle dayNightScript;
+
+    [Header("Yarn Spinner")]
+    public DialogueRunner dialogueRunner;
+    public InMemoryVariableStorage variableStorage;
     
     [Header("Game State (Read Only)")]
     public GameState currentState;
@@ -81,7 +86,21 @@ public class GameManager : MonoBehaviour
         yield return FadeScreen(1f);
 
         Debug.Log($"Playing radio update for Day {currentDay}...");
-        yield return new WaitForSeconds(3f); 
+        if (dialogueRunner != null)
+        {
+            variableStorage.SetValue("$currentDay", currentDay);
+
+            dialogueRunner.StartDialogue("RadioMorning");
+
+            while (dialogueRunner.IsDialogueRunning)
+            {
+                yield return null;
+            }
+        }
+        else
+        {
+            yield return new WaitForSeconds(2f);
+        }
 
         yield return FadeScreen(0f); 
         
@@ -104,6 +123,19 @@ public class GameManager : MonoBehaviour
         {
             StartCoroutine(StartDaySequence());
         }
+    }
+    public void ActualizarDatosParaRadio()
+    {
+        // Supongamos que tienes estas variables en tu juego
+        int clientesAyer = 15;
+        float ganancias = 120.5f;
+        bool huboPelea = true;
+
+        // Los enviamos al storage de Yarn. 
+        // El primer parámetro es el nombre de la variable en Yarn (debe empezar por $)
+        variableStorage.SetValue("$clientes_ayer", clientesAyer);
+        variableStorage.SetValue("$dinero_total", ganancias);
+        variableStorage.SetValue("$hubo_pelea", huboPelea);
     }
 
     private IEnumerator FadeScreen(float targetAlpha)

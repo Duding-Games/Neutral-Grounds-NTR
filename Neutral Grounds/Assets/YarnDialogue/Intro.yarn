@@ -1,8 +1,20 @@
-﻿title: Start
+﻿
+title: RadioMorning
 ---
-Radio: Good morning 
-Radio: Good morning again
-Radio: Good morning again yes
-Radio: Good morning again nooo
+<<declare $hubo_pelea = false>>
+<<declare $dinero_total = 0>>
+<<declare $clientes_ayer = 0>>
 
+Radio: ¡Buenos días! 
+<<if $hubo_pelea == true>>
+    Radio: Los vecinos comentan que anoche hubo algo de jaleo en la taberna... ¡Tened cuidado con el mobiliario!
+<<endif>>
+
+<<if $dinero_total > 100>>
+    Radio: Parece que la economía local está floreciendo. ¡Brindemos por ello!
+<<else>>
+    Radio: Tiempos difíciles para el comercio... se recomienda ahorrar cada moneda.
+<<endif>>
+
+Radio: Hoy han pasado {$clientes_ayer} personas por el pueblo.
 ===
