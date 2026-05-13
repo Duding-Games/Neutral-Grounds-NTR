@@ -214,12 +214,10 @@ public class NPCController : MonoBehaviour
         }
         else if (currentState == NPCState.WaitingForFood)
         {
-            // Drain patience over time. If it hits 0, ModifyPatience handles the angry exit!
             ModifyPatience(-patienceLossPerSecond * Time.deltaTime);
         }
         else if (currentState == NPCState.Eating)
         {
-            // Countdown until they finish their food
             currentEatingTimer -= Time.deltaTime;
             if (currentEatingTimer <= 0)
             {
