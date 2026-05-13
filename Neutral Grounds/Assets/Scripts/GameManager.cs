@@ -80,18 +80,21 @@ public class GameManager : MonoBehaviour
     {
         currentState = GameState.MorningBriefing;
         
-        if (dayNightScript != null) dayNightScript.progresoDia = 0f;
-
         if (transitionText != null) transitionText.text = "Day " + currentDay;
-        yield return FadeScreen(1f);
+
+        yield return FadeScreen(1f); 
+
+        if (dayNightScript != null) 
+        {
+            dayNightScript.progresoDia = 0f;
+        }
 
         Debug.Log($"Playing radio update for Day {currentDay}...");
+
         if (dialogueRunner != null)
         {
             variableStorage.SetValue("$currentDay", currentDay);
-            
             dialogueRunner.StartDialogue("RadioMorning");
-
             yield return null;
 
             while (dialogueRunner.IsDialogueRunning)
@@ -104,11 +107,11 @@ public class GameManager : MonoBehaviour
             yield return new WaitForSeconds(2f);
         }
 
-        yield return FadeScreen(0f); 
-        
         dayTimer = dayDurationSeconds;
         currentState = GameState.TavernOpen;
         Debug.Log($"Tavern is OPEN! Day {currentDay} has begun.");
+
+        yield return FadeScreen(0f); 
     }
 
     private void EndDay()
