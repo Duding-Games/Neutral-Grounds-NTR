@@ -1,20 +1,56 @@
-﻿
-title: RadioMorning
+﻿title: RadioMorning
 ---
-<<declare $hubo_pelea = false>>
-<<declare $dinero_total = 0>>
+// Declaramos las variables necesarias
+<<declare $currentDay = 1>>
 <<declare $clientes_ayer = 0>>
+<<declare $dinero_ayer = 0>>
+<<declare $hubo_pelea = false>>
 
-Radio: ¡Buenos días! 
-<<if $hubo_pelea == true>>
-    Radio: Los vecinos comentan que anoche hubo algo de jaleo en la taberna... ¡Tened cuidado con el mobiliario!
-<<endif>>
-
-<<if $dinero_total > 100>>
-    Radio: Parece que la economía local está floreciendo. ¡Brindemos por ello!
+// Este nodo solo decide a qué día saltar
+<<if $currentDay == 1>>
+    <<jump Radio_Dia1>>
+<<elseif $currentDay == 2>>
+    <<jump Radio_Dia2>>
+<<elseif $currentDay == 3>>
+    <<jump Radio_Dia3>>
 <<else>>
-    Radio: Tiempos difíciles para el comercio... se recomienda ahorrar cada moneda.
+    <<jump Radio_Final>>
 <<endif>>
+===
 
-Radio: Hoy han pasado {$clientes_ayer} personas por el pueblo.
+title: Radio_Dia1
+---
+// El día 1 siempre es igual, no usamos variables aquí
+Radio: ¡Muy buenos días! 
+Radio: Hoy comienza una nueva etapa para la taberna local.
+Radio: Esperamos que el nuevo tabernero esté a la altura.
+===
+
+title: Radio_Dia2
+---
+Radio: Amanece un segundo día radiante en el pueblo.
+// Aquí metemos la lógica dinámica según el día anterior
+<<if $clientes_ayer > 10>>
+    Radio: Se comenta que ayer la taberna estuvo llena hasta la bandera.
+<<else>>
+    Radio: Parece que ayer el ambiente estuvo algo tranquilo...
+<<endif>>
+===
+
+title: Radio_Dia3
+---
+Radio: Tercer y último día de la semana. El cielo está encapotado.
+<<if $dinero_ayer > 50>>
+    Radio: ¡La economía local va viento en popa gracias a vuestras compras!
+<<endif>>
+<<if $hubo_pelea>>
+    Radio: Todavía quedan cristales en la calle por la pelea de anoche...
+<<endif>>
+===
+
+title: Radio_Final
+---
+Radio: Y con esto cerramos la semana. 
+// Aquí puedes poner el resumen final basado en todo lo acumulado
+Radio: Gracias por sintonizarnos.
 ===

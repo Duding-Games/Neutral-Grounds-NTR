@@ -89,8 +89,10 @@ public class GameManager : MonoBehaviour
         if (dialogueRunner != null)
         {
             variableStorage.SetValue("$currentDay", currentDay);
-
+            
             dialogueRunner.StartDialogue("RadioMorning");
+
+            yield return null;
 
             while (dialogueRunner.IsDialogueRunning)
             {
