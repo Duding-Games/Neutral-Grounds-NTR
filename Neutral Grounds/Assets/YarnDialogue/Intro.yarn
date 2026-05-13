@@ -2,8 +2,8 @@
 ---
 // Declaramos las variables necesarias
 <<declare $currentDay = 1>>
-<<declare $clientes_ayer = 0>>
-<<declare $dinero_ayer = 0>>
+<<declare $tension = 0>>
+<<declare $dinero_total = 0>>
 <<declare $hubo_pelea = false>>
 
 // Este nodo solo decide a qué día saltar
@@ -30,7 +30,7 @@ title: Radio_Dia2
 ---
 Radio: Amanece un segundo día radiante en el pueblo.
 // Aquí metemos la lógica dinámica según el día anterior
-<<if $clientes_ayer > 10>>
+<<if $tension > 10>>
     Radio: Se comenta que ayer la taberna estuvo llena hasta la bandera.
 <<else>>
     Radio: Parece que ayer el ambiente estuvo algo tranquilo...
@@ -40,7 +40,7 @@ Radio: Amanece un segundo día radiante en el pueblo.
 title: Radio_Dia3
 ---
 Radio: Tercer y último día de la semana. El cielo está encapotado.
-<<if $dinero_ayer > 50>>
+<<if $dinero_total > 50>>
     Radio: ¡La economía local va viento en popa gracias a vuestras compras!
 <<endif>>
 <<if $hubo_pelea>>

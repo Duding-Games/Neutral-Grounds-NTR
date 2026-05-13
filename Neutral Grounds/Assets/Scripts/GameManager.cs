@@ -128,14 +128,12 @@ public class GameManager : MonoBehaviour
     }
     public void ActualizarDatosParaRadio()
     {
-        // Supongamos que tienes estas variables en tu juego
-        int clientesAyer = 15;
+
+        int tension = 15;
         float ganancias = 120.5f;
         bool huboPelea = true;
 
-        // Los enviamos al storage de Yarn. 
-        // El primer parámetro es el nombre de la variable en Yarn (debe empezar por $)
-        variableStorage.SetValue("$clientes_ayer", clientesAyer);
+        variableStorage.SetValue("$tension", tension);
         variableStorage.SetValue("$dinero_total", ganancias);
         variableStorage.SetValue("$hubo_pelea", huboPelea);
     }
