@@ -4579,7 +4579,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   duracionSegundos: 30
   progresoDia: 0
-  elTiempoPasaSolo: 1
+  elTiempoPasaSolo: 0
   colorDelSol:
     serializedVersion: 2
     key0: {r: 1, g: 1, b: 1, a: 1}
@@ -7554,6 +7554,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a010a96b97efe094880b3fc06b437327, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  dayNightScript: {fileID: 410087043}
   currentState: 0
   currentDay: 1
   activeCustomerCount: 0
@@ -10120,9 +10121,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   CurrentIDCounter: 7
-  json: '{"Options":[{"Connections":[{"__type":"EditableSpeechConnection:#DialogueEditor","Conditions":[],"NodeUID":6}],"EditorInfo":{"isRoot":false,"xPos":14,"yPos":192},"ID":1,"ParamActions":[],"TMPFontGUID":null,"Text":"Irse","parentUIDs":[0],"SpeechUID":-1},{"Connections":[{"__type":"EditableSpeechConnection:#DialogueEditor","Conditions":[],"NodeUID":6}],"EditorInfo":{"isRoot":false,"xPos":291,"yPos":247},"ID":2,"ParamActions":[],"TMPFontGUID":null,"Text":"Quedarse\n","parentUIDs":[0],"SpeechUID":-1},{"Connections":[{"__type":"EditableSpeechConnection:#DialogueEditor","Conditions":[],"NodeUID":6}],"EditorInfo":{"isRoot":false,"xPos":537,"yPos":146},"ID":3,"ParamActions":[],"TMPFontGUID":null,"Text":"Hacer
-    que te vas y quedarse","parentUIDs":[0],"SpeechUID":-1},{"Connections":[{"__type":"EditableSpeechConnection:#DialogueEditor","Conditions":[],"NodeUID":6}],"EditorInfo":{"isRoot":false,"xPos":450,"yPos":197},"ID":4,"ParamActions":[],"TMPFontGUID":null,"Text":"Hacer
-    que te quedas y te vas","parentUIDs":[0],"SpeechUID":-1},{"Connections":[{"__type":"EditableSpeechConnection:#DialogueEditor","Conditions":[],"NodeUID":6}],"EditorInfo":{"isRoot":false,"xPos":85,"yPos":243},"ID":5,"ParamActions":[],"TMPFontGUID":null,"Text":"Morir","parentUIDs":[0],"SpeechUID":-1}],"Parameters":[],"SpeechNodes":[{"Connections":[{"__type":"EditableOptionConnection:#DialogueEditor","Conditions":[],"NodeUID":1},{"__type":"EditableOptionConnection:#DialogueEditor","Conditions":[],"NodeUID":2},{"__type":"EditableOptionConnection:#DialogueEditor","Conditions":[],"NodeUID":3},{"__type":"EditableOptionConnection:#DialogueEditor","Conditions":[],"NodeUID":4},{"__type":"EditableOptionConnection:#DialogueEditor","Conditions":[],"NodeUID":5}],"EditorInfo":{"isRoot":true,"xPos":280,"yPos":22},"ID":0,"ParamActions":[],"TMPFontGUID":null,"Text":"Olaaaa","parentUIDs":[],"AdvanceDialogueAutomatically":false,"AudioGUID":null,"AutoAdvanceShouldDisplayOption":false,"IconGUID":null,"Name":"Yo","OptionUIDs":null,"SpeechUID":0,"TimeUntilAdvance":0,"Volume":0},{"Connections":[],"EditorInfo":{"isRoot":false,"xPos":278,"yPos":415},"ID":6,"ParamActions":[],"TMPFontGUID":null,"Text":"Fot
+  json: '{"Options":[{"Connections":[{"__type":"EditableSpeechConnection:#DialogueEditor","Conditions":[],"NodeUID":6}],"EditorInfo":{"isRoot":false,"xPos":227.5,"yPos":372},"ID":1,"ParamActions":[],"TMPFontGUID":null,"Text":"Irse","parentUIDs":[0],"SpeechUID":-1},{"Connections":[{"__type":"EditableSpeechConnection:#DialogueEditor","Conditions":[],"NodeUID":6}],"EditorInfo":{"isRoot":false,"xPos":504.5,"yPos":427},"ID":2,"ParamActions":[],"TMPFontGUID":null,"Text":"Quedarse\n","parentUIDs":[0],"SpeechUID":-1},{"Connections":[{"__type":"EditableSpeechConnection:#DialogueEditor","Conditions":[],"NodeUID":6}],"EditorInfo":{"isRoot":false,"xPos":750.5,"yPos":326},"ID":3,"ParamActions":[],"TMPFontGUID":null,"Text":"Hacer
+    que te vas y quedarse","parentUIDs":[0],"SpeechUID":-1},{"Connections":[{"__type":"EditableSpeechConnection:#DialogueEditor","Conditions":[],"NodeUID":6}],"EditorInfo":{"isRoot":false,"xPos":663.5,"yPos":377},"ID":4,"ParamActions":[],"TMPFontGUID":null,"Text":"Hacer
+    que te quedas y te vas","parentUIDs":[0],"SpeechUID":-1},{"Connections":[{"__type":"EditableSpeechConnection:#DialogueEditor","Conditions":[],"NodeUID":6}],"EditorInfo":{"isRoot":false,"xPos":298.5,"yPos":423},"ID":5,"ParamActions":[],"TMPFontGUID":null,"Text":"Morir","parentUIDs":[0],"SpeechUID":-1}],"Parameters":[],"SpeechNodes":[{"Connections":[{"__type":"EditableOptionConnection:#DialogueEditor","Conditions":[],"NodeUID":1},{"__type":"EditableOptionConnection:#DialogueEditor","Conditions":[],"NodeUID":2},{"__type":"EditableOptionConnection:#DialogueEditor","Conditions":[],"NodeUID":3},{"__type":"EditableOptionConnection:#DialogueEditor","Conditions":[],"NodeUID":4},{"__type":"EditableOptionConnection:#DialogueEditor","Conditions":[],"NodeUID":5}],"EditorInfo":{"isRoot":true,"xPos":493.5,"yPos":202},"ID":0,"ParamActions":[],"TMPFontGUID":null,"Text":"Olaaaa","parentUIDs":[],"AdvanceDialogueAutomatically":false,"AudioGUID":null,"AutoAdvanceShouldDisplayOption":false,"IconGUID":null,"Name":"Yo","OptionUIDs":null,"SpeechUID":0,"TimeUntilAdvance":0,"Volume":0},{"Connections":[],"EditorInfo":{"isRoot":false,"xPos":491.5,"yPos":595},"ID":6,"ParamActions":[],"TMPFontGUID":null,"Text":"Fot
     el camp!","parentUIDs":[1,2,3,4,5],"AdvanceDialogueAutomatically":false,"AudioGUID":null,"AutoAdvanceShouldDisplayOption":false,"IconGUID":null,"Name":"Yo","OptionUIDs":null,"SpeechUID":0,"TimeUntilAdvance":0,"Volume":0}]}'
   saveVersion: 110
   DefaultName: 

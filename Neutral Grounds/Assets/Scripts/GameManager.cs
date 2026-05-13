@@ -8,6 +8,9 @@ public class GameManager : MonoBehaviour
     public static GameManager Instance { get; private set; }
 
     public enum GameState { MorningBriefing, TavernOpen, ClosingTime, NightTransition, GameOver }
+
+    [Header("Script References")]
+    public DayNightCycle dayNightScript;
     
     [Header("Game State (Read Only)")]
     public GameState currentState;
@@ -43,6 +46,11 @@ public class GameManager : MonoBehaviour
         if (currentState == GameState.TavernOpen)
         {
             dayTimer -= Time.deltaTime;
+
+            if (dayNightScript != null)
+            {
+                dayNightScript.progresoDia = 1f - (dayTimer / dayDurationSeconds);
+            }
             
             if (dayTimer <= 0)
             {
@@ -66,6 +74,8 @@ public class GameManager : MonoBehaviour
     private IEnumerator StartDaySequence()
     {
         currentState = GameState.MorningBriefing;
+        
+        if (dayNightScript != null) dayNightScript.progresoDia = 0f;
 
         if (transitionText != null) transitionText.text = "Day " + currentDay;
         yield return FadeScreen(1f);
