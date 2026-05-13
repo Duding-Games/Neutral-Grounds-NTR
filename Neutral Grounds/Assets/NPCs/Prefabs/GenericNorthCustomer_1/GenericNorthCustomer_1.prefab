@@ -14,9 +14,8 @@ GameObject:
   - component: {fileID: 990760048945758995}
   - component: {fileID: 6062397599303604415}
   - component: {fileID: 6050938433935070725}
-  - component: {fileID: 5330382915348929625}
   m_Layer: 0
-  m_Name: NPCTEST
+  m_Name: GenericNorthCustomer_1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -130,6 +129,7 @@ MonoBehaviour:
   currentState: 0
   patienceLossPerSecond: 5
   timeToEat: 3
+  myConversation: {fileID: 5663373444116663473, guid: 5ab8b88ce030b824cb661cf38be48629, type: 3}
   agent: {fileID: 6050938433935070725}
   tavernEntry: {fileID: 0}
   spawnPoint: {fileID: 0}
@@ -155,16 +155,3 @@ NavMeshAgent:
   m_BaseOffset: 1
   m_WalkableMask: 4294967295
   m_ObstacleAvoidanceType: 0
---- !u!114 &5330382915348929625
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1710287243791126585}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 890ab139b9169404d9102a25fc3ca8f9, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  myConversation: {fileID: 5663373444116663473, guid: 5ab8b88ce030b824cb661cf38be48629, type: 3}
