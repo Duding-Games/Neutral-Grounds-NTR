@@ -1,6 +1,7 @@
 using System;
 using UnityEngine;
 using UnityEngine.AI;
+using DialogueEditor;
 
 public class NPCController : MonoBehaviour
 {
@@ -17,7 +18,7 @@ public class NPCController : MonoBehaviour
     [Tooltip("How long they stay at the table to eat before leaving")]
     public float timeToEat = 3f;
     private float currentEatingTimer;
-
+    public NPCConversation myConversation;
     private Chair assignedChair;
 
     [SerializeField] private NavMeshAgent agent;
@@ -235,6 +236,10 @@ public class NPCController : MonoBehaviour
 
     private void OnMouseOver()
     {
+        if (Input.GetMouseButtonDown(0))
+        {
+            ConversationManager.Instance.StartConversation(myConversation);
+        }
         if (currentState == NPCState.WaitingForFood)
         {
             if (Input.GetKeyDown(KeyCode.Alpha1))
