@@ -20,10 +20,10 @@
 
 title: Radio_Dia1
 ---
-// El día 1 siempre es igual, no usamos variables aquí
-Radio: ¡Muy buenos días! 
-Radio: Hoy comienza una nueva etapa para la taberna local.
-Radio: Esperamos que el nuevo tabernero esté a la altura.
+Radio: ¡Muy buenos días a todos los habitantes del <b>Norte</b> y del <b>Sur</b>! 
+Radio: O debería decir[pause=500/] .[pause=500/] .[pause=500/] .[pause=800/] ¡A <size=115%><color=\#42b6f5>Nivalia</color></size> y a <size=115%><color=\#f5b042>Solaris</color></size>!
+Radio: Y es que, después del exitoso referéndum realizado ayer para dictaminar la <i>división</i> del territorio...[pause=800/]
+Radio: ¡La acción se ha llevado a cabo gracias al <b><color=yellow>92%</color></b> de participación de la población y el <b><color=green>89%</color></b> de los votos a favor!
 ===
 
 title: Radio_Dia2
