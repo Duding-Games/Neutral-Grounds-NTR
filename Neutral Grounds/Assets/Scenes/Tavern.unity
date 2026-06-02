@@ -2753,8 +2753,32 @@ PrefabInstance:
       value: -90.130005
       objectReference: {fileID: 0}
     - target: {fileID: 65131611811258540, guid: 17163d74e7c6ef04681f4fb607351e08, type: 3}
+      propertyPath: m_Size.x
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 65131611811258540, guid: 17163d74e7c6ef04681f4fb607351e08, type: 3}
+      propertyPath: m_Size.y
+      value: 0.08
+      objectReference: {fileID: 0}
+    - target: {fileID: 65131611811258540, guid: 17163d74e7c6ef04681f4fb607351e08, type: 3}
+      propertyPath: m_Size.z
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 65131611811258540, guid: 17163d74e7c6ef04681f4fb607351e08, type: 3}
       propertyPath: m_Enabled
-      value: 0
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 65131611811258540, guid: 17163d74e7c6ef04681f4fb607351e08, type: 3}
+      propertyPath: m_Center.x
+      value: 0.0010157824
+      objectReference: {fileID: 0}
+    - target: {fileID: 65131611811258540, guid: 17163d74e7c6ef04681f4fb607351e08, type: 3}
+      propertyPath: m_Center.y
+      value: 0.8
+      objectReference: {fileID: 0}
+    - target: {fileID: 65131611811258540, guid: 17163d74e7c6ef04681f4fb607351e08, type: 3}
+      propertyPath: m_Center.z
+      value: -0.0038779601
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -4960,7 +4984,7 @@ GameObject:
   - component: {fileID: 484338072}
   - component: {fileID: 484338071}
   m_Layer: 0
-  m_Name: Interaction Manager
+  m_Name: Food Manager
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -4984,7 +5008,7 @@ MonoBehaviour:
     m_Bits: 64
   liftHeight: 0.1
   lineMaterial: {fileID: 0}
-  lineWidth: 0.05
+  lineWidth: 0.025
 --- !u!4 &484338072
 Transform:
   m_ObjectHideFlags: 0
@@ -15293,8 +15317,24 @@ PrefabInstance:
       value: -18.368
       objectReference: {fileID: 0}
     - target: {fileID: 65731270549174340, guid: 9b38a1021b7d3c1428119919344cbfa5, type: 3}
+      propertyPath: m_Size.x
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 65731270549174340, guid: 9b38a1021b7d3c1428119919344cbfa5, type: 3}
+      propertyPath: m_Size.y
+      value: 0.08
+      objectReference: {fileID: 0}
+    - target: {fileID: 65731270549174340, guid: 9b38a1021b7d3c1428119919344cbfa5, type: 3}
+      propertyPath: m_Size.z
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 65731270549174340, guid: 9b38a1021b7d3c1428119919344cbfa5, type: 3}
       propertyPath: m_Enabled
-      value: 0
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 65731270549174340, guid: 9b38a1021b7d3c1428119919344cbfa5, type: 3}
+      propertyPath: m_Center.y
+      value: 0.8
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -16237,9 +16277,6 @@ MonoBehaviour:
   knownRumors: []
   notificationPanel: {fileID: 1081974336}
   notificationText: {fileID: 1600161528}
-  rumorMenuPanel: {fileID: 1329836226}
-  buttonContainer: {fileID: 230934453}
-  rumorButtonPrefab: {fileID: 6147701217843091782, guid: a9feb96f4679a1d4eaadc8cb12f61aba, type: 3}
 --- !u!1001 &1913158309
 PrefabInstance:
   m_ObjectHideFlags: 0

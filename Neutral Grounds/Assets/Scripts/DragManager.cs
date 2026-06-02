@@ -119,7 +119,7 @@ public class DragManager : MonoBehaviour
                 
                 if (npc != null && npc.currentState == NPCController.NPCState.WaitingForFood)
                 {
-                    npc.ReceiveOrder(_currentFoodType);
+                    npc.ReceiveOrder(_currentFoodType, _currentDraggedFood);
 
                     Collider foodCol = _currentDraggedFood.GetComponent<Collider>();
                     if (foodCol != null) foodCol.enabled = true;

@@ -28,6 +28,7 @@ public class NPCController : MonoBehaviour
     public GameObject angryParticlePrefab;
 
     private Chair assignedChair;
+    private GameObject currentFoodOnTable; // Variable para guardar el plato físico
 
     [SerializeField] private NavMeshAgent agent;
     [SerializeField] private Transform tavernEntry;
@@ -128,9 +129,13 @@ public class NPCController : MonoBehaviour
         if (currentPatience <= 0 && currentState != NPCState.LeavingAngry) GetAngryAndLeave();
     }
 
-    public void ReceiveOrder(FoodPreference foodServed)
+    // Actualizado para recibir también el GameObject del plato
+    public void ReceiveOrder(FoodPreference foodServed, GameObject foodItem)
     {
         if (currentState != NPCState.WaitingForFood) return;
+
+        // Guardamos la referencia a la comida en la mesa para poder borrarla luego
+        currentFoodOnTable = foodItem;
 
         MeshRenderer meshRenderer = GetComponent<MeshRenderer>();
         if (foodServed == data.foodPreference)
@@ -152,6 +157,10 @@ public class NPCController : MonoBehaviour
     {
         currentState = NPCState.LeavingAngry;
         if (assignedChair != null) assignedChair.isOccupied = false;
+        
+        // Destruimos el plato si lo tenía
+        if (currentFoodOnTable != null) Destroy(currentFoodOnTable);
+        
         if (spawnPoint != null) agent.SetDestination(spawnPoint.position);
     }
 
@@ -159,6 +168,10 @@ public class NPCController : MonoBehaviour
     {
         currentState = NPCState.LeavingHappy;
         if (assignedChair != null) assignedChair.isOccupied = false;
+        
+        // Destruimos el plato al irse contento
+        if (currentFoodOnTable != null) Destroy(currentFoodOnTable);
+        
         if (spawnPoint != null) agent.SetDestination(spawnPoint.position);
     }
 
@@ -224,8 +237,9 @@ public class NPCController : MonoBehaviour
 
         if (currentState == NPCState.WaitingForFood)
         {
-            if (Input.GetKeyDown(KeyCode.Alpha1)) ReceiveOrder(FoodPreference.Synthetic);
-            else if (Input.GetKeyDown(KeyCode.Alpha2)) ReceiveOrder(FoodPreference.Organic);
+            // Atajos de teclado para debug: les pasamos 'null' porque no hay plato físico
+            if (Input.GetKeyDown(KeyCode.Alpha1)) ReceiveOrder(FoodPreference.Synthetic, null);
+            else if (Input.GetKeyDown(KeyCode.Alpha2)) ReceiveOrder(FoodPreference.Organic, null);
         }
 
         if (ConversationManager.Instance != null && ConversationManager.Instance.IsConversationActive) return;
