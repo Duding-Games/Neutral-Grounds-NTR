@@ -4,190 +4,150 @@ public class DragManager : MonoBehaviour
 {
     private Camera _mainCamera;
 
-    [Header("Configuración de Detección")]
-    public string draggableTag = "Draggable"; // Tag que deben tener los objetos
-    public LayerMask esceneLayers; // Opcional: Capas que el Raycast debe ignorar (ej: triggers)
+    [Header("Configuración de Interacción")]
+    public string dispenserTag = "FoodDispenser"; 
+    public LayerMask chairLayer; 
+    public float liftHeight = 1.5f; 
 
-    [Header("Configuración Visual (Hover)")]
-    public Color hoverColor = Color.yellow;
-    
-    // Variables para gestionar el hover actual
-    private Renderer _currentHoveredRenderer;
-    private Color _initialHoveredColor;
+    [Header("Configuración Visual de la Línea")]
+    public Material lineMaterial; // Opcional: Arrastra un material básico aquí en el Inspector
+    public float lineWidth = 0.05f;
 
-    [Header("Configuración de Arrastre")]
-    public float liftHeight = 0.3f; // Cuánto sube el objeto al agarrarlo
-
-    // Variables para gestionar el arrastre actual
-    private Rigidbody _selectedRb;
-    private float _targetY; // La altura fija a la que flotará el objeto
-    private Plane _movementPlane; // Plano matemático horizontal (XZ)
-    private Vector3 _dragOffset; // Distancia entre el centro del objeto y donde pinchó el ratón
+    // Variables de estado interno
+    private GameObject _currentDraggedFood;
+    private FoodPreference _currentFoodType;
+    private float _targetY;
+    private Plane _movementPlane;
+    private LineRenderer _dropLine;
 
     void Start()
     {
         _mainCamera = Camera.main;
         if (_mainCamera == null) Debug.LogError("No hay una cámara principal en la escena.");
+
+        // Configuramos la línea visual por código para no tener que añadirla a mano
+        _dropLine = gameObject.AddComponent<LineRenderer>();
+        _dropLine.startWidth = lineWidth;
+        _dropLine.endWidth = lineWidth;
+        _dropLine.positionCount = 2;
+        _dropLine.enabled = false;
+        
+        // Si no asignas un material, le pone el por defecto para que se vea blanca
+        if (lineMaterial != null) _dropLine.material = lineMaterial;
+        else _dropLine.material = new Material(Shader.Find("Sprites/Default"));
     }
 
     void Update()
     {
-        // 1. Gestión del Hover (Color amarillo)
-        HandleHover();
+        if (Input.GetMouseButtonDown(0)) TryGrabFood();
 
-        // 2. Gestión de Inputs (Clic, Arrastrar, Soltar)
-        HandleInput();
+        if (_currentDraggedFood != null && Input.GetMouseButton(0)) DragFood();
+
+        if (Input.GetMouseButtonUp(0) && _currentDraggedFood != null) TryServeFood();
     }
 
-    // --- LÓGICA DEL HOVER (Cambio de Color) ---
-    private void HandleHover()
-    {
-        // Si estamos arrastrando algo, no calculamos hover en otros objetos
-        if (_selectedRb != null)
-        {
-            ClearHover();
-            return;
-        }
-
-        Ray ray = _mainCamera.ScreenPointToRay(Input.mousePosition);
-        RaycastHit hit;
-
-        // Lanzamos un rayo constante desde la cámara al ratón
-        if (Physics.Raycast(ray, out hit, float.PositiveInfinity))
-        {
-            // Si tocamos algo con el Tag correcto
-            if (hit.collider.CompareTag(draggableTag))
-            {
-                Renderer newRenderer = hit.collider.GetComponent<Renderer>();
-                
-                if (newRenderer != null)
-                {
-                    // Si es un objeto DISTINTO al que ya estábamos iluminando
-                    if (newRenderer != _currentHoveredRenderer)
-                    {
-                        ClearHover(); // Restauramos el color del anterior
-
-                        // Guardamos y cambiamos el color del nuevo
-                        _currentHoveredRenderer = newRenderer;
-                        _initialHoveredColor = _currentHoveredRenderer.material.color;
-                        _currentHoveredRenderer.material.color = hoverColor;
-                    }
-                    // Si es el mismo, no hacemos nada (ya está amarillo)
-                    return; 
-                }
-            }
-        }
-
-        // Si el rayo no toca nada o toca algo sin el tag, limpiamos el hover actual
-        ClearHover();
-    }
-
-    // Restaura el color original del objeto que tenía el hover
-    private void ClearHover()
-    {
-        if (_currentHoveredRenderer != null)
-        {
-            _currentHoveredRenderer.material.color = _initialHoveredColor;
-            _currentHoveredRenderer = null;
-        }
-    }
-
-
-    // --- LÓGICA DEL INPUT Y MOVIMIENTO ---
-    private void HandleInput()
-    {
-        // Botón izquierdo presionado: Intentar agarrar
-        if (Input.GetMouseButtonDown(0))
-        {
-            TryPickUp();
-        }
-
-        // Botón izquierdo soltado: Soltar objeto
-        if (Input.GetMouseButtonUp(0) && _selectedRb != null)
-        {
-            DropObject();
-        }
-    }
-
-    // Usamos FixedUpdate para mover objetos físicos para mayor suavidad
-    void FixedUpdate()
-    {
-        if (_selectedRb != null)
-        {
-            DragObject();
-        }
-    }
-
-    private void TryPickUp()
+    private void TryGrabFood()
     {
         Ray ray = _mainCamera.ScreenPointToRay(Input.mousePosition);
-        RaycastHit hit;
-
-        if (Physics.Raycast(ray, out hit))
+        
+        if (Physics.Raycast(ray, out RaycastHit hit))
         {
-            if (hit.collider.CompareTag(draggableTag))
+            if (hit.collider.CompareTag(dispenserTag))
             {
-                _selectedRb = hit.collider.attachedRigidbody;
-
-                if (_selectedRb != null)
+                FoodDispenser dispenser = hit.collider.GetComponent<FoodDispenser>();
+                if (dispenser != null && dispenser.foodPrefab != null)
                 {
-                    // Al agarrar, quitamos el hover visual (opcional)
-                    ClearHover();
+                    _currentDraggedFood = Instantiate(dispenser.foodPrefab);
+                    _currentFoodType = dispenser.foodType;
 
-                    // Configuramos físicas
-                    _selectedRb.useGravity = false;
-                    _selectedRb.isKinematic = true; // O false si quieres colisiones físicas reales al mover
+                    Collider col = _currentDraggedFood.GetComponent<Collider>();
+                    if (col != null) col.enabled = false;
 
-                    // Calculamos la altura de arrastre (su Y actual + el levantamiento)
-                    _targetY = _selectedRb.position.y + liftHeight;
-
-                    // Creamos el PLANO MATEMÁTICO. 
-                    // Es un plano horizontal (mirando hacia arriba Vector3.up) 
-                    // situado a la altura objetivo (_targetY).
+                    _targetY = hit.point.y + liftHeight;
                     _movementPlane = new Plane(Vector3.up, new Vector3(0, _targetY, 0));
-
-                    // Calculamos dónde toca el rayo del ratón en ese plano matemático
-                    float distance;
-                    if (_movementPlane.Raycast(ray, out distance))
-                    {
-                        Vector3 pointOnPlane = ray.GetPoint(distance);
-                        
-                        // Calculamos el offset (diferencia) para que el objeto no "salte" al centro del puntero
-                        // Proyectamos la posición actual del objeto a la altura de arrastre para el cálculo
-                        Vector3 objProjectedPos = _selectedRb.position;
-                        objProjectedPos.y = _targetY;
-                        _dragOffset = objProjectedPos - pointOnPlane;
-                    }
                 }
             }
         }
     }
 
-    private void DragObject()
+    private void DragFood()
     {
         Ray ray = _mainCamera.ScreenPointToRay(Input.mousePosition);
-        float distance;
-
-        // Buscamos continuamente dónde apunta el ratón en el plano matemático horizontal
-        if (_movementPlane.Raycast(ray, out distance))
+        
+        if (_movementPlane.Raycast(ray, out float distance))
         {
-            Vector3 currentPointOnPlane = ray.GetPoint(distance);
+            Vector3 pointOnPlane = ray.GetPoint(distance);
+            _currentDraggedFood.transform.position = pointOnPlane;
             
-            // La posición destino es el punto en el plano + el offset inicial,
-            // asegurando que mantenemos la Y fija.
-            Vector3 targetPosition = currentPointOnPlane + _dragOffset;
-            targetPosition.y = _targetY; 
+            // --- LÓGICA DE LA LÍNEA VISUAL ---
+            _dropLine.enabled = true;
+            _dropLine.SetPosition(0, _currentDraggedFood.transform.position);
 
-            // Movemos el Rigidbody (mejor que transform.position para físicas)
-            _selectedRb.MovePosition(targetPosition);
+            // Lanzamos un rayo hacia abajo desde la comida para ver qué hay debajo
+            if (Physics.Raycast(_currentDraggedFood.transform.position, Vector3.down, out RaycastHit hitDown, Mathf.Infinity))
+            {
+                _dropLine.SetPosition(1, hitDown.point);
+
+                // Si lo que hay debajo es de la capa ChairLayer, la línea se pone verde
+                if (((1 << hitDown.collider.gameObject.layer) & chairLayer) != 0)
+                {
+                    _dropLine.startColor = Color.green;
+                    _dropLine.endColor = Color.green;
+                }
+                else
+                {
+                    _dropLine.startColor = Color.red;
+                    _dropLine.endColor = Color.red;
+                }
+            }
         }
     }
 
-    private void DropObject()
+    private void TryServeFood()
     {
-        // Restauramos físicas
-        _selectedRb.useGravity = true;
-        _selectedRb.isKinematic = false;
-        _selectedRb = null;
+        _dropLine.enabled = false; // Apagamos la línea al soltar
+        bool successfullyServed = false;
+
+        // ¡EL CAMBIO CLAVE! En vez de usar la posición del ratón, comprobamos qué hay justo debajo de la comida
+        if (Physics.Raycast(_currentDraggedFood.transform.position, Vector3.down, out RaycastHit hit, Mathf.Infinity, chairLayer))
+        {
+            Collider[] colliders = Physics.OverlapSphere(hit.collider.transform.position, 1.5f);
+            
+            foreach (Collider col in colliders)
+            {
+                NPCController npc = col.GetComponent<NPCController>();
+                
+                if (npc != null && npc.currentState == NPCController.NPCState.WaitingForFood)
+                {
+                    npc.ReceiveOrder(_currentFoodType);
+
+                    Collider foodCol = _currentDraggedFood.GetComponent<Collider>();
+                    if (foodCol != null) foodCol.enabled = true;
+
+                    Transform anchor = hit.collider.transform.Find("PlateAnchor");
+
+                    if (anchor != null)
+                    {
+                        _currentDraggedFood.transform.position = anchor.position;
+                        _currentDraggedFood.transform.rotation = anchor.rotation;
+                    }
+                    else
+                    {
+                        _currentDraggedFood.transform.position = hit.collider.transform.position + Vector3.up * 1f;
+                        Debug.LogWarning("¡A esta silla le falta el PlateAnchor!");
+                    }
+
+                    successfullyServed = true;
+                    break;
+                }
+            }
+        }
+
+        if (!successfullyServed)
+        {
+            Destroy(_currentDraggedFood);
+        }
+
+        _currentDraggedFood = null;
     }
 }
