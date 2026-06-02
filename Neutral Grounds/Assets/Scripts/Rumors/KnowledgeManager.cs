@@ -1,7 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using TMPro; // <-- Necesario para usar TextMeshPro
+using TMPro; 
 
 public class KnowledgeManager : MonoBehaviour
 {
@@ -10,9 +10,9 @@ public class KnowledgeManager : MonoBehaviour
     [Header("Rumores Conocidos")]
     public List<RumorData> knownRumors = new List<RumorData>();
 
-    [Header("Feedback Visual (UI)")]
-    public GameObject notificationPanel; // Un panel oscuro de fondo
-    public TextMeshProUGUI notificationText; // <-- Cambiado a TextMeshProUGUI
+    [Header("Feedback Visual (Notificación)")]
+    public GameObject notificationPanel; 
+    public TextMeshProUGUI notificationText;
 
     private void Awake()
     {
@@ -26,7 +26,6 @@ public class KnowledgeManager : MonoBehaviour
         }
     }
 
-    // Llama a esto desde un Unity Event en tu Dialogue Editor
     public void LearnRumor(RumorData newRumor)
     {
         if (!knownRumors.Contains(newRumor))
@@ -44,11 +43,12 @@ public class KnowledgeManager : MonoBehaviour
         if (notificationPanel != null && notificationText != null)
         {
             notificationText.text = message;
-            notificationPanel.SetActive(true); // Encendemos el cartel
+            notificationPanel.SetActive(true); 
             
-            yield return new WaitForSeconds(4f); // Esperamos 4 segundos
+            // Usamos Realtime para que no se congele si el diálogo pausa el juego
+            yield return new WaitForSecondsRealtime(4f); 
             
-            notificationPanel.SetActive(false); // Lo apagamos
+            notificationPanel.SetActive(false); 
         }
     }
 }

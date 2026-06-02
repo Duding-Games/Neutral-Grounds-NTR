@@ -206,8 +206,8 @@ MonoBehaviour:
   patienceLossPerSecond: 5
   timeToEat: 3
   patienceBar: {fileID: 7779425842280044616}
-  happyParticles: {fileID: 5040509250284517117, guid: 23204fcf25c28584fb63899de000dd09, type: 3}
-  angryParticles: {fileID: 6315494325879133461, guid: d77ebff6eb8cdf54b9b295f70467bb03, type: 3}
+  happyParticlePrefab: {fileID: 0}
+  angryParticlePrefab: {fileID: 0}
   agent: {fileID: 6050938433935070725}
   tavernEntry: {fileID: 0}
   spawnPoint: {fileID: 0}
@@ -444,7 +444,6 @@ GameObject:
   - component: {fileID: 8199654672041534816}
   - component: {fileID: 2782230411786424289}
   - component: {fileID: 4035431420200946299}
-  - component: {fileID: 4170554006136157855}
   m_Layer: 5
   m_Name: Canvas
   m_TagString: Untagged
@@ -518,20 +517,3 @@ MonoBehaviour:
   m_DefaultSpriteDPI: 96
   m_DynamicPixelsPerUnit: 1
   m_PresetInfoIsWorld: 1
---- !u!114 &4170554006136157855
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7865993645651476085}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: dc42784cf147c0c48a680349fa168899, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_IgnoreReversedGraphics: 1
-  m_BlockingObjects: 0
-  m_BlockingMask:
-    serializedVersion: 2
-    m_Bits: 4294967295

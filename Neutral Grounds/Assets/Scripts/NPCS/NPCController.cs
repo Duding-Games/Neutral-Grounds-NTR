@@ -24,8 +24,6 @@ public class NPCController : MonoBehaviour
 
     [Header("Visual Feedback")]
     public Slider patienceBar; 
-    
-    [Tooltip("Arrastra aquí tus PREFABS de partículas desde la carpeta del proyecto")]
     public GameObject happyParticlePrefab;
     public GameObject angryParticlePrefab;
 
@@ -35,7 +33,7 @@ public class NPCController : MonoBehaviour
     [SerializeField] private Transform tavernEntry;
     [SerializeField] public Transform spawnPoint;
 
-    private bool isHovering = false; // Para detectar el ratón de forma segura
+    private bool isHovering = false; 
 
     public enum NPCState
     {
@@ -51,20 +49,14 @@ public class NPCController : MonoBehaviour
 
     private void Awake()
     {
-        if (agent == null)
-        {
-            agent = GetComponent<NavMeshAgent>();
-        }
+        if (agent == null) agent = GetComponent<NavMeshAgent>();
     }
 
     private void Start()
     {
         if (data != null)
         {
-            if (GameManager.Instance != null)
-            {
-                GameManager.Instance.RegisterCustomer();
-            }
+            if (GameManager.Instance != null) GameManager.Instance.RegisterCustomer();
             InitializeNPC();
         }
         else
@@ -78,48 +70,31 @@ public class NPCController : MonoBehaviour
         currentPatience = data.maxPatience;
         UpdatePatienceUI(); 
         currentState = NPCState.Arrive;
-
         Arrive();
     }
 
     private void Arrive()
     {
-        if (tavernEntry != null)
-        {
-            agent.SetDestination(tavernEntry.position);
-        }
-        else
-        {
-            SearchForChair();
-        }
+        if (tavernEntry != null) agent.SetDestination(tavernEntry.position);
+        else SearchForChair();
     }
 
     private void SearchForChair()
     {
         currentState = NPCState.SearchingForChair;
         ChairType preferredType = (data.faction == Faction.North) ? ChairType.Cold : ChairType.Warm;
-
         bool isInEnemyTerritory;
         assignedChair = ChairManager.Instance.FindBestAvailableChair(preferredType, out isInEnemyTerritory);
 
         if (assignedChair != null)
         {
-            if (isInEnemyTerritory)
-            {
-                ModifyPatience(-20f);
-            }
-            else
-            {
-                ModifyPatience(20f);
-            }
+            if (isInEnemyTerritory) ModifyPatience(-20f);
+            else ModifyPatience(20f);
 
             agent.SetDestination(assignedChair.transform.position);
             currentState = NPCState.WalkingToChair;
         }
-        else
-        {
-            GetAngryAndLeave();
-        }
+        else GetAngryAndLeave();
     }
 
     public void ModifyPatience(float amount)
@@ -129,13 +104,11 @@ public class NPCController : MonoBehaviour
         UpdatePatienceUI(); 
 
         Vector3 spawnPosition = transform.position + Vector3.up * 2f;
-
         if (amount > 0 && happyParticlePrefab != null) 
         {
             GameObject particles = Instantiate(happyParticlePrefab, spawnPosition, Quaternion.identity);
             Destroy(particles, 2f);
         }
-        
         if (amount < 0 && angryParticlePrefab != null) 
         {
             GameObject particles = Instantiate(angryParticlePrefab, spawnPosition, Quaternion.identity);
@@ -147,29 +120,19 @@ public class NPCController : MonoBehaviour
 
     private void UpdatePatienceUI()
     {
-        if (patienceBar != null)
-        {
-            patienceBar.value = currentPatience / data.maxPatience;
-        }
+        if (patienceBar != null) patienceBar.value = currentPatience / data.maxPatience;
     }
 
     private void CheckPatienceLevel()
     {
-        if (currentPatience <= 0 && currentState != NPCState.LeavingAngry)
-        {
-            GetAngryAndLeave();
-        }
+        if (currentPatience <= 0 && currentState != NPCState.LeavingAngry) GetAngryAndLeave();
     }
 
     public void ReceiveOrder(FoodPreference foodServed)
     {
-        if (currentState != NPCState.WaitingForFood)
-        {
-            return;
-        }
+        if (currentState != NPCState.WaitingForFood) return;
 
         MeshRenderer meshRenderer = GetComponent<MeshRenderer>();
-
         if (foodServed == data.foodPreference)
         {
             ModifyPatience(20f);
@@ -188,37 +151,20 @@ public class NPCController : MonoBehaviour
     private void GetAngryAndLeave()
     {
         currentState = NPCState.LeavingAngry;
-
-        if (assignedChair != null)
-        {
-            assignedChair.isOccupied = false;
-        }
-
-        if (spawnPoint != null)
-        {
-            agent.SetDestination(spawnPoint.position);
-        }
+        if (assignedChair != null) assignedChair.isOccupied = false;
+        if (spawnPoint != null) agent.SetDestination(spawnPoint.position);
     }
 
     private void LeaveHappy()
     {
         currentState = NPCState.LeavingHappy;
-
-        if (assignedChair != null)
-        {
-            assignedChair.isOccupied = false;
-        }
-
-        if (spawnPoint != null)
-        {
-            agent.SetDestination(spawnPoint.position);
-        }
+        if (assignedChair != null) assignedChair.isOccupied = false;
+        if (spawnPoint != null) agent.SetDestination(spawnPoint.position);
     }
 
     private void CheckSurroundings()
     {
         Collider[] nearbyColliders = Physics.OverlapSphere(transform.position, 5f);
-
         foreach (Collider col in nearbyColliders)
         {
             NPCController otherNPC = col.GetComponent<NPCController>();
@@ -231,7 +177,6 @@ public class NPCController : MonoBehaviour
         }
     }
 
-    // --- DETECCIÓN DE RATÓN SEGURA ---
     private void OnMouseEnter() { isHovering = true; }
     private void OnMouseExit() { isHovering = false; }
 
@@ -277,7 +222,6 @@ public class NPCController : MonoBehaviour
     {
         if (!isHovering) return;
 
-        // Comida
         if (currentState == NPCState.WaitingForFood)
         {
             if (Input.GetKeyDown(KeyCode.Alpha1)) ReceiveOrder(FoodPreference.Synthetic);
@@ -297,12 +241,12 @@ public class NPCController : MonoBehaviour
             }
         }
 
-        // Click Derecho: Compartir Rumor
+        // Click Derecho: Compartir Rumor automáticamente
         if (Input.GetMouseButtonDown(1))
         {
             if (KnowledgeManager.Instance != null && KnowledgeManager.Instance.knownRumors.Count > 0)
             {
-                // Cogemos el ÚLTIMO rumor aprendido
+                // Cogemos el último de la lista
                 RumorData rumorToShare = KnowledgeManager.Instance.knownRumors[KnowledgeManager.Instance.knownRumors.Count - 1];
                 ShareRumor(rumorToShare);
             }
@@ -319,7 +263,7 @@ public class NPCController : MonoBehaviour
 
         if (data.faction == Faction.North)
         {
-            ModifyPatience(rumor.northPatienceChange); // Esto soltará partículas automáticamente
+            ModifyPatience(rumor.northPatienceChange); 
             if (rumor.northReactionChat != null && ConversationManager.Instance != null)
             {
                 ConversationManager.Instance.StartConversation(rumor.northReactionChat);
@@ -327,7 +271,7 @@ public class NPCController : MonoBehaviour
         }
         else if (data.faction == Faction.South)
         {
-            ModifyPatience(rumor.southPatienceChange); // Esto soltará partículas automáticamente
+            ModifyPatience(rumor.southPatienceChange); 
             if (rumor.southReactionChat != null && ConversationManager.Instance != null)
             {
                 ConversationManager.Instance.StartConversation(rumor.southReactionChat);
