@@ -15,5 +15,9 @@ MonoBehaviour:
   characterName: John Doe
   faction: 0
   foodPreference: 0
+  trait: 3
   maxPatience: 100
-  noiseSensitivity: {fileID: 0}
+  noiseSensitivity: 0
+  happyConversations:
+  - {fileID: 794659398736029159, guid: 5afe8e7aaa7d7a84c830c8dc89781f3b, type: 3}
+  angryConversations: []

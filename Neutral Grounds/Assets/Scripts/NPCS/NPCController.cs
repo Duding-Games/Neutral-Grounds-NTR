@@ -1,6 +1,7 @@
 using System;
 using UnityEngine;
 using UnityEngine.AI;
+using UnityEngine.UI; // Necesario para la Slider de paciencia
 using DialogueEditor;
 
 public class NPCController : MonoBehaviour
@@ -18,7 +19,15 @@ public class NPCController : MonoBehaviour
     [Tooltip("How long they stay at the table to eat before leaving")]
     public float timeToEat = 3f;
     private float currentEatingTimer;
-    public NPCConversation myConversation;
+    
+    // Timer para que no estén calculando vecinos cada milisegundo
+    private float interactionTimer = 3f; 
+
+    [Header("Visual Feedback")]
+    public Slider patienceBar; // Arrastra aquí la barra de la UI
+    public ParticleSystem happyParticles;
+    public ParticleSystem angryParticles;
+
     private Chair assignedChair;
 
     [SerializeField] private NavMeshAgent agent;
@@ -61,14 +70,8 @@ public class NPCController : MonoBehaviour
     private void InitializeNPC()
     {
         currentPatience = data.maxPatience;
+        UpdatePatienceUI(); // Actualizar la barra visual al inicio
         currentState = NPCState.Arrive;
-
-        if (data.faction == Faction.North)
-        {
-        }
-        else if (data.faction == Faction.South)
-        {
-        }
 
         Arrive();
     }
@@ -120,8 +123,22 @@ public class NPCController : MonoBehaviour
     {
         currentPatience += amount;
         currentPatience = Mathf.Clamp(currentPatience, 0, data.maxPatience);
+        UpdatePatienceUI(); // Feedback visual instantáneo
+
+        // Feedback de partículas
+        if (amount > 0 && happyParticles != null) happyParticles.Play();
+        if (amount < 0 && angryParticles != null) angryParticles.Play();
 
         CheckPatienceLevel();
+    }
+
+    private void UpdatePatienceUI()
+    {
+        if (patienceBar != null)
+        {
+            // El slider va de 0 a 1, así que dividimos la actual entre la máxima
+            patienceBar.value = currentPatience / data.maxPatience;
+        }
     }
 
     private void CheckPatienceLevel()
@@ -196,8 +213,47 @@ public class NPCController : MonoBehaviour
         }
     }
 
+    // --- NARRATIVA EMERGENTE: INTERACCIÓN ENTRE NPCS ---
+    private void CheckSurroundings()
+    {
+        // Creamos una esfera invisible de 5 metros para detectar otros NPCs
+        Collider[] nearbyColliders = Physics.OverlapSphere(transform.position, 5f);
+        int nearbyPeople = 0;
+
+        foreach (Collider col in nearbyColliders)
+        {
+            NPCController otherNPC = col.GetComponent<NPCController>();
+            if (otherNPC != null && otherNPC != this) // Si hay otro NPC y no soy yo mismo
+            {
+                nearbyPeople++;
+
+                // Lógica de rasgos
+                if (data.trait == NPCTrait.Loner)
+                {
+                    ModifyPatience(-2f); // Odia estar cerca de cualquiera
+                }
+                else if (data.trait == NPCTrait.Grumpy && otherNPC.data.faction != data.faction)
+                {
+                    ModifyPatience(-5f); // Odia estar cerca de la facción rival
+                }
+                else if (data.trait == NPCTrait.Chatty && otherNPC.data.faction == data.faction)
+                {
+                    ModifyPatience(2f); // Le encanta estar con los suyos
+                }
+            }
+        }
+    }
+
     void Update()
     {
+        // Control del timer de interacción
+        interactionTimer -= Time.deltaTime;
+        if (interactionTimer <= 0)
+        {
+            CheckSurroundings();
+            interactionTimer = 3f; // Vuelve a comprobar cada 3 segundos
+        }
+
         if (currentState == NPCState.Arrive)
         {
             if (!agent.pathPending && agent.remainingDistance <= agent.stoppingDistance)
@@ -238,8 +294,20 @@ public class NPCController : MonoBehaviour
     {
         if (Input.GetMouseButtonDown(0))
         {
-            ConversationManager.Instance.StartConversation(myConversation);
+            // Elige qué decir basado en su estado de ánimo (paciencia)
+            NPCConversation[] convoList = (currentPatience > 50f) ? data.happyConversations : data.angryConversations;
+
+            if (convoList != null && convoList.Length > 0)
+            {
+                int randomIndex = UnityEngine.Random.Range(0, convoList.Length);
+                ConversationManager.Instance.StartConversation(convoList[randomIndex]);
+            }
+            else
+            {
+                Debug.LogWarning(data.characterName + " no tiene conversaciones asignadas en su Data.");
+            }
         }
+
         if (currentState == NPCState.WaitingForFood)
         {
             if (Input.GetKeyDown(KeyCode.Alpha1))

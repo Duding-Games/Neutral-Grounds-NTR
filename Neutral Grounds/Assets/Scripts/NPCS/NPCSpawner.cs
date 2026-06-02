@@ -3,7 +3,8 @@ using UnityEngine;
 public class NPCSpawner : MonoBehaviour
 {
     [Header("Spawning Setup")]
-    public GameObject npcPrefab;
+    [Tooltip("Pon aquí todos los diferentes tipos de NPCs que tengas")]
+    public GameObject[] npcPrefabs; 
     public Transform spawnPoint;
     public Transform exitDoor;
 
@@ -27,9 +28,13 @@ public class NPCSpawner : MonoBehaviour
 
     public void SpawnNPC()
     {
-        if (npcPrefab == null || spawnPoint == null) return;
+        if (npcPrefabs == null || npcPrefabs.Length == 0 || spawnPoint == null) return;
 
-        GameObject newNPC = Instantiate(npcPrefab, spawnPoint.position, spawnPoint.rotation);
+        // Elige un NPC aleatorio de la lista
+        int randomIndex = Random.Range(0, npcPrefabs.Length);
+        GameObject prefabToSpawn = npcPrefabs[randomIndex];
+
+        GameObject newNPC = Instantiate(prefabToSpawn, spawnPoint.position, spawnPoint.rotation);
         NPCController controller = newNPC.GetComponent<NPCController>();
 
         if (controller != null)
