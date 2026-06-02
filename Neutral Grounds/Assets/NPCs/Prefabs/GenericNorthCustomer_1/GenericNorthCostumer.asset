@@ -20,4 +20,7 @@ MonoBehaviour:
   noiseSensitivity: 0
   happyConversations:
   - {fileID: 794659398736029159, guid: 5afe8e7aaa7d7a84c830c8dc89781f3b, type: 3}
-  angryConversations: []
+  - {fileID: 5642285903578927392, guid: e5ada97e33ee4c74f826a12637c52747, type: 3}
+  angryConversations:
+  - {fileID: 1687740161339307271, guid: e2af39b0c62356a428f55b0f2b72dcca, type: 3}
+  - {fileID: 5642285903578927392, guid: e5ada97e33ee4c74f826a12637c52747, type: 3}
