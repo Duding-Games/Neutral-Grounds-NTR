@@ -1,7 +1,7 @@
 using System;
 using UnityEngine;
 using UnityEngine.AI;
-using UnityEngine.UI; // Necesario para la Slider de paciencia
+using UnityEngine.UI;
 using DialogueEditor;
 
 public class NPCController : MonoBehaviour
@@ -20,19 +20,22 @@ public class NPCController : MonoBehaviour
     public float timeToEat = 3f;
     private float currentEatingTimer;
     
-    // Timer para que no estén calculando vecinos cada milisegundo
     private float interactionTimer = 3f; 
 
     [Header("Visual Feedback")]
-    public Slider patienceBar; // Arrastra aquí la barra de la UI
-    public ParticleSystem happyParticles;
-    public ParticleSystem angryParticles;
+    public Slider patienceBar; 
+    
+    [Tooltip("Arrastra aquí tus PREFABS de partículas desde la carpeta del proyecto")]
+    public GameObject happyParticlePrefab;
+    public GameObject angryParticlePrefab;
 
     private Chair assignedChair;
 
     [SerializeField] private NavMeshAgent agent;
     [SerializeField] private Transform tavernEntry;
     [SerializeField] public Transform spawnPoint;
+
+    private bool isHovering = false; // Para detectar el ratón de forma segura
 
     public enum NPCState
     {
@@ -58,7 +61,10 @@ public class NPCController : MonoBehaviour
     {
         if (data != null)
         {
-            GameManager.Instance.RegisterCustomer();
+            if (GameManager.Instance != null)
+            {
+                GameManager.Instance.RegisterCustomer();
+            }
             InitializeNPC();
         }
         else
@@ -70,7 +76,7 @@ public class NPCController : MonoBehaviour
     private void InitializeNPC()
     {
         currentPatience = data.maxPatience;
-        UpdatePatienceUI(); // Actualizar la barra visual al inicio
+        UpdatePatienceUI(); 
         currentState = NPCState.Arrive;
 
         Arrive();
@@ -100,12 +106,10 @@ public class NPCController : MonoBehaviour
         {
             if (isInEnemyTerritory)
             {
-                Debug.Log($"{data.characterName} hates this zone. Patience decreases.");
                 ModifyPatience(-20f);
             }
             else
             {
-                Debug.Log($"{data.characterName} likes this zone. Patience increases.");
                 ModifyPatience(20f);
             }
 
@@ -114,7 +118,6 @@ public class NPCController : MonoBehaviour
         }
         else
         {
-            Debug.Log($"The tavern is full! {data.characterName} leaves ANGRY.");
             GetAngryAndLeave();
         }
     }
@@ -123,11 +126,21 @@ public class NPCController : MonoBehaviour
     {
         currentPatience += amount;
         currentPatience = Mathf.Clamp(currentPatience, 0, data.maxPatience);
-        UpdatePatienceUI(); // Feedback visual instantáneo
+        UpdatePatienceUI(); 
 
-        // Feedback de partículas
-        if (amount > 0 && happyParticles != null) happyParticles.Play();
-        if (amount < 0 && angryParticles != null) angryParticles.Play();
+        Vector3 spawnPosition = transform.position + Vector3.up * 2f;
+
+        if (amount > 0 && happyParticlePrefab != null) 
+        {
+            GameObject particles = Instantiate(happyParticlePrefab, spawnPosition, Quaternion.identity);
+            Destroy(particles, 2f);
+        }
+        
+        if (amount < 0 && angryParticlePrefab != null) 
+        {
+            GameObject particles = Instantiate(angryParticlePrefab, spawnPosition, Quaternion.identity);
+            Destroy(particles, 2f);
+        }
 
         CheckPatienceLevel();
     }
@@ -136,7 +149,6 @@ public class NPCController : MonoBehaviour
     {
         if (patienceBar != null)
         {
-            // El slider va de 0 a 1, así que dividimos la actual entre la máxima
             patienceBar.value = currentPatience / data.maxPatience;
         }
     }
@@ -149,7 +161,7 @@ public class NPCController : MonoBehaviour
         }
     }
 
-   public void ReceiveOrder(FoodPreference foodServed)
+    public void ReceiveOrder(FoodPreference foodServed)
     {
         if (currentState != NPCState.WaitingForFood)
         {
@@ -160,21 +172,15 @@ public class NPCController : MonoBehaviour
 
         if (foodServed == data.foodPreference)
         {
-            Debug.Log("Correct food! " + data.characterName + " is enjoying their food");
             ModifyPatience(20f);
-            
             if (meshRenderer != null) meshRenderer.material.color = Color.green;
-            
             currentState = NPCState.Eating;
             currentEatingTimer = timeToEat; 
         }
         else
         {
-            Debug.Log("Wrong food! " + data.characterName + " refuses to eat this!");
             ModifyPatience(-40f); 
-            
             if (meshRenderer != null) meshRenderer.material.color = Color.red;
-            
             GetAngryAndLeave(); 
         }
     }
@@ -182,8 +188,6 @@ public class NPCController : MonoBehaviour
     private void GetAngryAndLeave()
     {
         currentState = NPCState.LeavingAngry;
-
-        Debug.Log(data.characterName + " from the " + data.faction + " is leaving ANGRY");
 
         if (assignedChair != null)
         {
@@ -200,8 +204,6 @@ public class NPCController : MonoBehaviour
     {
         currentState = NPCState.LeavingHappy;
 
-        Debug.Log(data.characterName + " finished eating and is leaving HAPPY!");
-
         if (assignedChair != null)
         {
             assignedChair.isOccupied = false;
@@ -213,53 +215,40 @@ public class NPCController : MonoBehaviour
         }
     }
 
-    // --- NARRATIVA EMERGENTE: INTERACCIÓN ENTRE NPCS ---
     private void CheckSurroundings()
     {
-        // Creamos una esfera invisible de 5 metros para detectar otros NPCs
         Collider[] nearbyColliders = Physics.OverlapSphere(transform.position, 5f);
-        int nearbyPeople = 0;
 
         foreach (Collider col in nearbyColliders)
         {
             NPCController otherNPC = col.GetComponent<NPCController>();
-            if (otherNPC != null && otherNPC != this) // Si hay otro NPC y no soy yo mismo
+            if (otherNPC != null && otherNPC != this) 
             {
-                nearbyPeople++;
-
-                // Lógica de rasgos
-                if (data.trait == NPCTrait.Loner)
-                {
-                    ModifyPatience(-2f); // Odia estar cerca de cualquiera
-                }
-                else if (data.trait == NPCTrait.Grumpy && otherNPC.data.faction != data.faction)
-                {
-                    ModifyPatience(-5f); // Odia estar cerca de la facción rival
-                }
-                else if (data.trait == NPCTrait.Chatty && otherNPC.data.faction == data.faction)
-                {
-                    ModifyPatience(2f); // Le encanta estar con los suyos
-                }
+                if (data.trait == NPCTrait.Loner) ModifyPatience(-2f); 
+                else if (data.trait == NPCTrait.Grumpy && otherNPC.data.faction != data.faction) ModifyPatience(-5f); 
+                else if (data.trait == NPCTrait.Chatty && otherNPC.data.faction == data.faction) ModifyPatience(2f); 
             }
         }
     }
 
+    // --- DETECCIÓN DE RATÓN SEGURA ---
+    private void OnMouseEnter() { isHovering = true; }
+    private void OnMouseExit() { isHovering = false; }
+
     void Update()
     {
-        // Control del timer de interacción
+        CheckPlayerInputs();
+
         interactionTimer -= Time.deltaTime;
         if (interactionTimer <= 0)
         {
             CheckSurroundings();
-            interactionTimer = 3f; // Vuelve a comprobar cada 3 segundos
+            interactionTimer = 3f; 
         }
 
         if (currentState == NPCState.Arrive)
         {
-            if (!agent.pathPending && agent.remainingDistance <= agent.stoppingDistance)
-            {
-                SearchForChair();
-            }
+            if (!agent.pathPending && agent.remainingDistance <= agent.stoppingDistance) SearchForChair();
         }
         else if (currentState == NPCState.WalkingToChair)
         {
@@ -276,56 +265,78 @@ public class NPCController : MonoBehaviour
         else if (currentState == NPCState.Eating)
         {
             currentEatingTimer -= Time.deltaTime;
-            if (currentEatingTimer <= 0)
-            {
-                LeaveHappy();
-            }
+            if (currentEatingTimer <= 0) LeaveHappy();
         }
         else if (currentState == NPCState.LeavingAngry || currentState == NPCState.LeavingHappy)
         {
-            if (!agent.pathPending && agent.remainingDistance <= agent.stoppingDistance)
-            {
-                Destroy(gameObject);
-            }
+            if (!agent.pathPending && agent.remainingDistance <= agent.stoppingDistance) Destroy(gameObject);
         }
     }
 
-    private void OnMouseOver()
+    private void CheckPlayerInputs()
     {
+        if (!isHovering) return;
+
+        // Comida
+        if (currentState == NPCState.WaitingForFood)
+        {
+            if (Input.GetKeyDown(KeyCode.Alpha1)) ReceiveOrder(FoodPreference.Synthetic);
+            else if (Input.GetKeyDown(KeyCode.Alpha2)) ReceiveOrder(FoodPreference.Organic);
+        }
+
+        if (ConversationManager.Instance != null && ConversationManager.Instance.IsConversationActive) return;
+
+        // Click Izquierdo: Charla Normal
         if (Input.GetMouseButtonDown(0))
         {
-            // Elige qué decir basado en su estado de ánimo (paciencia)
             NPCConversation[] convoList = (currentPatience > 50f) ? data.happyConversations : data.angryConversations;
-
             if (convoList != null && convoList.Length > 0)
             {
                 int randomIndex = UnityEngine.Random.Range(0, convoList.Length);
                 ConversationManager.Instance.StartConversation(convoList[randomIndex]);
             }
-            else
-            {
-                Debug.LogWarning(data.characterName + " no tiene conversaciones asignadas en su Data.");
-            }
         }
 
-        if (currentState == NPCState.WaitingForFood)
+        // Click Derecho: Compartir Rumor
+        if (Input.GetMouseButtonDown(1))
         {
-            if (Input.GetKeyDown(KeyCode.Alpha1))
+            if (KnowledgeManager.Instance != null && KnowledgeManager.Instance.knownRumors.Count > 0)
             {
-                ReceiveOrder(FoodPreference.Synthetic);
+                // Cogemos el ÚLTIMO rumor aprendido
+                RumorData rumorToShare = KnowledgeManager.Instance.knownRumors[KnowledgeManager.Instance.knownRumors.Count - 1];
+                ShareRumor(rumorToShare);
             }
-            else if (Input.GetKeyDown(KeyCode.Alpha2))
+            else
             {
-                ReceiveOrder(FoodPreference.Organic);
+                Debug.Log("Todavía no sabes ningún rumor.");
+            }
+        }
+    }
+
+    private void ShareRumor(RumorData rumor)
+    {
+        Debug.Log($"Contando el rumor '{rumor.rumorName}' a {data.characterName}");
+
+        if (data.faction == Faction.North)
+        {
+            ModifyPatience(rumor.northPatienceChange); // Esto soltará partículas automáticamente
+            if (rumor.northReactionChat != null && ConversationManager.Instance != null)
+            {
+                ConversationManager.Instance.StartConversation(rumor.northReactionChat);
+            }
+        }
+        else if (data.faction == Faction.South)
+        {
+            ModifyPatience(rumor.southPatienceChange); // Esto soltará partículas automáticamente
+            if (rumor.southReactionChat != null && ConversationManager.Instance != null)
+            {
+                ConversationManager.Instance.StartConversation(rumor.southReactionChat);
             }
         }
     }
 
     private void OnDestroy()
     {
-        if (GameManager.Instance != null)
-        {
-            GameManager.Instance.UnregisterCustomer();
-        }
+        if (GameManager.Instance != null) GameManager.Instance.UnregisterCustomer();
     }
 }
