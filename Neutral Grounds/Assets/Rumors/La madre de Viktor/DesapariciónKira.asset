@@ -20,7 +20,7 @@ MonoBehaviour:
   southPatienceChange: 0
   northReactionChat: {fileID: 8381208144315658450, guid: 5a4497c0a4ff5bb41a08bdffe0d205f9, type: 3}
   southReactionChat: {fileID: 1731532290395569468, guid: ebbed7b8c64610644939b7394e4785bf, type: 3}
-  viktorReactionChat: {fileID: 4705378436016246125, guid: dee1ead755e78ff41a9cfeab6305f4e9, type: 3}
+  viktorReactionChat: {fileID: 7153458095142650527, guid: 76ccb96bad2db7d488e19af1ab3c32d3, type: 3}
   valeriaReactionChat: {fileID: 5992123809218964384, guid: 2792e9fb88bc6f749b8b2f0f94985e9e, type: 3}
   irinaReactionChat: {fileID: 5463418172071011063, guid: ce618db0d17b8dc438f06bc7c878b0a8, type: 3}
   lorenzoReactionChat: {fileID: 7104610790365160979, guid: 63715eec689ad244cb9b1fb4bb0e6744, type: 3}
