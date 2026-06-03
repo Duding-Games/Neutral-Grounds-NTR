@@ -129,7 +129,9 @@ public class NPCController : MonoBehaviour
         currentState = NPCState.LeavingAngry;
         if (assignedChair != null) assignedChair.isOccupied = false;
         if (currentFoodOnTable != null) Destroy(currentFoodOnTable);
+        
         if (spawnPoint != null) agent.SetDestination(spawnPoint.position);
+        else Debug.LogWarning("NPC no tiene spawnPoint para salir.");
     }
 
     private void LeaveHappy()
@@ -137,7 +139,9 @@ public class NPCController : MonoBehaviour
         currentState = NPCState.LeavingHappy;
         if (assignedChair != null) assignedChair.isOccupied = false;
         if (currentFoodOnTable != null) Destroy(currentFoodOnTable);
+        
         if (spawnPoint != null) agent.SetDestination(spawnPoint.position);
+        else Debug.LogWarning("NPC no tiene spawnPoint para salir.");
     }
 
     private void CheckSurroundings()
@@ -162,6 +166,11 @@ public class NPCController : MonoBehaviour
     {
         CheckPlayerInputs();
 
+        // --- EL CONGELADOR DE TIEMPO ---
+        // Si hay una conversación en curso, no restamos paciencia ni avanzamos sus relojes.
+        if (ConversationManager.Instance != null && ConversationManager.Instance.IsConversationActive)
+            return; 
+
         interactionTimer -= Time.deltaTime;
         if (interactionTimer <= 0)
         {
@@ -181,7 +190,10 @@ public class NPCController : MonoBehaviour
                 transform.position = assignedChair.transform.position;
             }
         }
-        else if (currentState == NPCState.WaitingForFood) ModifyPatience(-patienceLossPerSecond * Time.deltaTime);
+        else if (currentState == NPCState.WaitingForFood) 
+        {
+            ModifyPatience(-patienceLossPerSecond * Time.deltaTime);
+        }
         else if (currentState == NPCState.Eating)
         {
             currentEatingTimer -= Time.deltaTime;
@@ -189,7 +201,11 @@ public class NPCController : MonoBehaviour
         }
         else if (currentState == NPCState.LeavingAngry || currentState == NPCState.LeavingHappy)
         {
-            if (!agent.pathPending && agent.remainingDistance <= agent.stoppingDistance) Destroy(gameObject);
+            // Usamos 0.5f de margen para asegurarnos de que caminan hasta la puerta de verdad
+            if (!agent.pathPending && agent.remainingDistance <= 0.5f) 
+            {
+                Destroy(gameObject);
+            }
         }
     }
 
@@ -225,11 +241,8 @@ public class NPCController : MonoBehaviour
 
     public void ReceiveRumor(RumorData rumor)
     {
-        Debug.Log($"Intentando contar el rumor '{rumor.rumorName}' a {data.characterName}");
-
         if (rumorsHeard.Contains(rumor))
         {
-            Debug.Log($"{data.characterName} dice: ¡Ya me has contado esto!");
             if (data.alreadyKnownConversation != null && ConversationManager.Instance != null)
             {
                 ConversationManager.Instance.StartConversation(data.alreadyKnownConversation);
@@ -239,16 +252,13 @@ public class NPCController : MonoBehaviour
 
         rumorsHeard.Add(rumor);
 
-        // --- NUEVA LÓGICA: ¿ES UN VIP? ---
         if (data.isVIP)
         {
-            // Los VIPs ganan o pierden más paciencia que la gente normal (multiplicador x1.5)
             float vipPatienceChange = (data.faction == Faction.North) ? rumor.northPatienceChange : rumor.southPatienceChange;
             ModifyPatience(vipPatienceChange * 1.5f);
 
             NPCConversation vipConvo = null;
 
-            // Buscamos su respuesta específica según quién sea
             switch (data.vipIdentity)
             {
                 case VIPCharacter.Viktor: vipConvo = rumor.viktorReactionChat; break;
@@ -257,36 +267,24 @@ public class NPCController : MonoBehaviour
                 case VIPCharacter.Lorenzo: vipConvo = rumor.lorenzoReactionChat; break;
             }
 
-            // Si le asignaste un diálogo VIP en el rumor, lo reproducimos
             if (vipConvo != null && ConversationManager.Instance != null)
             {
                 ConversationManager.Instance.StartConversation(vipConvo);
-                return; // Cortamos aquí para que no reproduzca también el genérico
+                return; 
             }
-            
-            // (Si se te olvidó asignarle el diálogo VIP, el código saltará este 'return' 
-            // y ejecutará el bloque genérico de abajo como medida de seguridad).
         }
 
-        // --- LÓGICA NORMAL (O DE SEGURIDAD PARA VIPS SIN DIÁLOGO ASIGNADO) ---
         if (data.faction == Faction.North)
         {
-            // Si no era VIP, aplicamos la paciencia normal
             if (!data.isVIP) ModifyPatience(rumor.northPatienceChange); 
-
             if (rumor.northReactionChat != null && ConversationManager.Instance != null)
-            {
                 ConversationManager.Instance.StartConversation(rumor.northReactionChat);
-            }
         }
         else if (data.faction == Faction.South)
         {
             if (!data.isVIP) ModifyPatience(rumor.southPatienceChange); 
-
             if (rumor.southReactionChat != null && ConversationManager.Instance != null)
-            {
                 ConversationManager.Instance.StartConversation(rumor.southReactionChat);
-            }
         }
     }
 

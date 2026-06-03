@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 681a1fe18de8efc479e922a9d465f6d0, type: 3}
-  m_Name: NewNPC
+  m_Name: NPCData_ViktorKrell
   m_EditorClassIdentifier: 
   characterName: Viktor Krell
   faction: 0
@@ -20,6 +20,10 @@ MonoBehaviour:
   vipIdentity: 1
   maxPatience: 100
   noiseSensitivity: 75
-  happyConversations: []
-  angryConversations: []
-  alreadyKnownConversation: {fileID: 0}
+  happyConversations:
+  - {fileID: 3870092394543573250, guid: 6fe73f00b20f4ee42aa5544255ac37e0, type: 3}
+  - {fileID: 2937203755625995510, guid: 0fd2e86d88c15414b946bbdf0e9061c9, type: 3}
+  angryConversations:
+  - {fileID: 8864978894032900812, guid: bb7f8e03a55019b40888f2d7d7fcd285, type: 3}
+  - {fileID: 4487856331244342120, guid: aa397bc3583c2a5409807e5644035538, type: 3}
+  alreadyKnownConversation: {fileID: 1393756149319118358, guid: a20ef0b87735d7d4eb89df7f9b6e6cc8, type: 3}
