@@ -16,7 +16,7 @@ public class NPCController : MonoBehaviour
 
     [Header("Timers")]
     public float patienceLossPerSecond = 1f;
-    public float timeToEat = 25f;
+    public float timeToEat = 60f;
     private float currentEatingTimer;
     
     private float interactionTimer = 3f; 

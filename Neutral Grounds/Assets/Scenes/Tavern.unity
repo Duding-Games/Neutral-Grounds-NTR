@@ -2051,6 +2051,18 @@ MonoBehaviour:
     vipPrefab: {fileID: 5395989592536283589, guid: 2dfaa20e8181c494bbf5203f92448d1e, type: 3}
     timeToSpawn: 0.1
     hasAppearedToday: 0
+  - characterName: Irina
+    vipPrefab: {fileID: 1697942920901049228, guid: 8cfbf4ccd72c87147abfbd7ab4690e8a, type: 3}
+    timeToSpawn: 0.25
+    hasAppearedToday: 0
+  - characterName: Valeria
+    vipPrefab: {fileID: 7458765808026853575, guid: aa50a99b20ab55442b5277a2542c4225, type: 3}
+    timeToSpawn: 0.4
+    hasAppearedToday: 0
+  - characterName: Lorenzo
+    vipPrefab: {fileID: 3924694728137191110, guid: 90755b36405cd75498ae05417157cf87, type: 3}
+    timeToSpawn: 0.6
+    hasAppearedToday: 0
 --- !u!1001 &246327243
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -3952,7 +3964,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4a11d6ed514b05c49848ede9c7521884, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  duracionSegundos: 30
+  duracionSegundos: 240
   progresoDia: 0
   elTiempoPasaSolo: 0
   colorDelSol:
@@ -7104,7 +7116,7 @@ MonoBehaviour:
   currentDay: 1
   activeCustomerCount: 0
   maxDays: 3
-  dayDurationSeconds: 30
+  dayDurationSeconds: 240
   globalReputation: 50
   transitionScreen: {fileID: 1020520490}
   transitionText: {fileID: 1925367477}
@@ -13854,7 +13866,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   npcPrefabs:
-  - {fileID: 1710287243791126585, guid: 878829ccf6b20ab499956bc0e53f96e7, type: 3}
+  - {fileID: 542903529823292573, guid: 97923bd987d1bdd4b8786e144d41dda8, type: 3}
+  - {fileID: 4301901466625815110, guid: 8eb3b33e9b656eb4097b371de4dce7c1, type: 3}
+  - {fileID: 3081677079260358538, guid: 6044bc79815f230468e7805b357fd58f, type: 3}
+  - {fileID: 2237592208604462474, guid: 4a70efb2b39cd704281d775083119085, type: 3}
   spawnPoint: {fileID: 1863932248}
   exitDoor: {fileID: 1863932248}
   timeBetweenSpawns: 10
