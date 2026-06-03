@@ -14,6 +14,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   rumorName: FronteraCerrada
   description: "Se dice que ma\xF1ana cerrar\xE1n la frontera..."
+  rumorSound: {fileID: 8300000, guid: cb4aa734f00c7e14ca551d04ac349659, type: 3}
+  rumorVolume: 1
   northPatienceChange: -20
   southPatienceChange: 15
   northReactionChat: {fileID: 8754683447888317010, guid: 5d1d16b97d0474045b6c11eeb6d6c23c, type: 3}

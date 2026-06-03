@@ -9,6 +9,11 @@ public class RumorData : ScriptableObject
     [TextArea]
     public string description; 
 
+    [Header("Sonido del Rumor")]
+    public AudioClip rumorSound; // Arrastra aquí el MP3/WAV desde el Inspector
+    [Range(0f, 1f)]
+    public float rumorVolume = 1f; // Para controlar el volumen desde el Inspector
+
     [Header("Reacciones Genéricas (Puntos)")]
     public int northPatienceChange; 
     public int southPatienceChange;
@@ -24,12 +29,19 @@ public class RumorData : ScriptableObject
     public NPCConversation lorenzoReactionChat;
 
     // --- LA FUNCIÓN RECUPERADA ---
-    // Esta es la función que se había borrado y que llama el Dialogue Editor
     public void TriggerRumor()
     {
         if (KnowledgeManager.Instance != null)
         {
             KnowledgeManager.Instance.LearnRumor(this);
+            
+            // --- REPRODUCIMOS EL SONIDO AQUÍ ---
+            if (rumorSound != null)
+            {
+                // Hacemos que suene exactamente donde está la cámara principal 
+                // para asegurarnos de que el jugador lo escucha al máximo volumen
+                AudioSource.PlayClipAtPoint(rumorSound, Camera.main.transform.position, rumorVolume);
+            }
         }
         else
         {
