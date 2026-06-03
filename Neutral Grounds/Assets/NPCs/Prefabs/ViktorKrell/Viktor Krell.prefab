@@ -85,7 +85,7 @@ MonoBehaviour:
   m_MinValue: 0
   m_MaxValue: 1
   m_WholeNumbers: 0
-  m_Value: 0
+  m_Value: 0.4
   m_OnValueChanged:
     m_PersistentCalls:
       m_Calls: []
@@ -638,6 +638,14 @@ PrefabInstance:
     m_TransformParent: {fileID: 0}
     m_Modifications:
     - target: {fileID: -8679921383154817045, guid: ade63e7fd92c26342a35feb67fcc8d9a, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 0.8
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: ade63e7fd92c26342a35feb67fcc8d9a, type: 3}
+      propertyPath: m_LocalScale.z
+      value: 0.8
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: ade63e7fd92c26342a35feb67fcc8d9a, type: 3}
       propertyPath: m_LocalPosition.x
       value: -13.03
       objectReference: {fileID: 0}
@@ -734,8 +742,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   data: {fileID: 11400000, guid: f77b05b79e4da6948b49802f88642a94, type: 2}
-  currentPatience: 0
-  currentState: 0
+  currentPatience: 40
+  currentState: 6
   patienceLossPerSecond: 5
   timeToEat: 3
   patienceBar: {fileID: 8637023327295045734}
