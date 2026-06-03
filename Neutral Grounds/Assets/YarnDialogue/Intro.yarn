@@ -2,7 +2,7 @@
 ---
 // Declaramos las variables necesarias
 <<declare $currentDay = 1>>
-<<declare $reputation = 0>>
+<<declare $reputation = 50>>
 
 // Este nodo solo decide a qué día saltar
 <<if $currentDay == 1>>
@@ -18,6 +18,7 @@
 
 title: Radio_Dia1
 ---
+<<empezar_radio Radio>>
 Radio: ¡Muy buenos días a todos los habitantes del <b>Norte</b> y del <b>Sur</b>! 
 Radio: O debería decir[pause=500/] .[pause=500/] .[pause=500/] .[pause=800/] ¡A <size=115%><color=\#42b6f5>Nivalia</color></size> y a <size=115%><color=\#f5b042>Solaris</color></size>!
 Radio: Y es que, después del <b>exitoso</b> referéndum de ayer, la separación de nuestro país es casi una realidad.
@@ -36,10 +37,12 @@ Radio: Recuerden que los ciudadanos de Nivalia llevan generaciones a base de com
 Radio: Por el contrario, a los de Solaris sírvanles comida real, fresca, bien asada y cargada de todas las especias posibles. ¡Un error en el menú podría causar un conflicto internacional!
 Radio: ¿Conseguirán los diplomáticos aparcar su avaricia y trazar la frontera antes de que acabe el tiempo?
 Radio: ¡El reloj ya está en marcha! ¡Buena suerte a todos!
+<<parar_radio Radio>>
 ===
 
 title: Radio_Dia2
 ---
+<<empezar_radio Radio>>
 Radio: ¡Muy buenos días! O no tan buenos para algunos... [pause=500/] Entramos en el <b>segundo día</b> del plazo límite.
 Radio: Quedan menos de 48 horas para que se cierre el acuerdo fronterizo, y los rumores que nos llegan desde la taberna de la Zona Central son, cuanto menos, interesantes.
 
@@ -58,10 +61,12 @@ Radio: Quedan menos de 48 horas para que se cierre el acuerdo fronterizo, y los 
 <<endif>>
 
 Radio: Sea como sea, el reloj no perdona. ¡Aprovechen este segundo día, porque el tiempo vuela!
+<<parar_radio Radio>>
 ===
 
 title: Radio_Dia3
 ---
+<<empezar_radio Radio>>
 Radio: ¡Atención a todos los ciudadanos! [pause=500/] Hemos llegado al <b><color=red>ÚLTIMO DÍ</color><color=red>A</color></b>. 
 Radio: En apenas unas horas, el plazo de tres días llegará a cero. Hoy se decide el futuro de nuestras dos naciones.
 Radio: La presión en la taberna central debe ser asfixiante. Echemos un vistazo a las últimas previsiones...
@@ -81,10 +86,12 @@ Radio: La presión en la taberna central debe ser asfixiante. Echemos un vistazo
 <<endif>>
 
 Radio: A quien regente esa taberna, solo podemos decirle una cosa: aguante la respiración. ¡Hoy se hace historia!
+<<parar_radio Radio>>
 ===
 
 title: Radio_Final
 ---
+<<empezar_radio Radio>>
 Radio: ¡Ciudadanos! [pause=500/] <b><size=120%>El plazo ha terminado.</size></b>
 Radio: El reloj ha llegado a cero. Los líderes han salido de la taberna y ya tenemos la resolución oficial del tratado fronterizo.
 
@@ -106,4 +113,5 @@ Radio: El reloj ha llegado a cero. Los líderes han salido de la taberna y ya te
 <<endif>>
 
 Radio: Así queda escrito el destino de nuestra tierra. Gracias por sintonizarnos durante estos tres tensos días. [pause=800/] Fin de la emisión.
+<<parar_radio Radio>>
 ===
