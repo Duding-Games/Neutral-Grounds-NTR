@@ -470,7 +470,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 28dfc09b86fbd2148b3981b7ee3aea5a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  data: {fileID: 0}
+  data: {fileID: 11400000, guid: c0cca418799cefd44aa0774ca5ec195f, type: 2}
   currentPatience: 0
   currentState: 0
   patienceLossPerSecond: 5
