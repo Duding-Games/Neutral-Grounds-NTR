@@ -1,0 +1,28 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 681a1fe18de8efc479e922a9d465f6d0, type: 3}
+  m_Name: ValeriaMarin
+  m_EditorClassIdentifier: 
+  characterName: 
+  faction: 1
+  foodPreference: 1
+  trait: 1
+  isVIP: 1
+  vipIdentity: 2
+  maxPatience: 100
+  noiseSensitivity: 0
+  happyConversations:
+  - {fileID: 1577117446065464175, guid: ff0948e98aa63a54f9a9a96bb00d5093, type: 3}
+  - {fileID: 6462259433234863509, guid: 16f775ab8b77d4a419a940a3f2848ee7, type: 3}
+  angryConversations:
+  - {fileID: 96429523563254292, guid: dd1f5f52e4d797e4ba1b9e43c257ef61, type: 3}
+  alreadyKnownConversation: {fileID: 783627324085325781, guid: 4e42c7337e71bbf48b71d9532215b624, type: 3}

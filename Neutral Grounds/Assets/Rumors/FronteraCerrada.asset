@@ -12,12 +12,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 036c44920e018be4387789f80a267d3e, type: 3}
   m_Name: FronteraCerrada
   m_EditorClassIdentifier: 
-  rumorName: FronteraCerrada
+  rumorName: Frontera Cerrada
   description: "Se dice que ma\xF1ana cerrar\xE1n la frontera..."
   rumorSound: {fileID: 8300000, guid: cb4aa734f00c7e14ca551d04ac349659, type: 3}
   rumorVolume: 1
-  northPatienceChange: -20
-  southPatienceChange: 15
+  northPatienceChange: 0
+  southPatienceChange: 0
   northReactionChat: {fileID: 8754683447888317010, guid: 5d1d16b97d0474045b6c11eeb6d6c23c, type: 3}
   southReactionChat: {fileID: 8754683447888317010, guid: 5d1d16b97d0474045b6c11eeb6d6c23c, type: 3}
   viktorReactionChat: {fileID: 8754683447888317010, guid: 5d1d16b97d0474045b6c11eeb6d6c23c, type: 3}
