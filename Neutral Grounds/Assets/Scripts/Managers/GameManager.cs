@@ -131,14 +131,9 @@ public class GameManager : MonoBehaviour
     }
     public void ActualizarDatosParaRadio()
     {
+        int reputation = 15;
 
-        int tension = 15;
-        float ganancias = 120.5f;
-        bool huboPelea = true;
-
-        variableStorage.SetValue("$tension", tension);
-        variableStorage.SetValue("$dinero_total", ganancias);
-        variableStorage.SetValue("$hubo_pelea", huboPelea);
+        variableStorage.SetValue("$reputation", reputation);
     }
 
     private IEnumerator FadeScreen(float targetAlpha)

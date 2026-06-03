@@ -2,9 +2,7 @@
 ---
 // Declaramos las variables necesarias
 <<declare $currentDay = 1>>
-<<declare $tension = 0>>
-<<declare $dinero_total = 0>>
-<<declare $hubo_pelea = false>>
+<<declare $reputation = 0>>
 
 // Este nodo solo decide a qué día saltar
 <<if $currentDay == 1>>
@@ -22,35 +20,90 @@ title: Radio_Dia1
 ---
 Radio: ¡Muy buenos días a todos los habitantes del <b>Norte</b> y del <b>Sur</b>! 
 Radio: O debería decir[pause=500/] .[pause=500/] .[pause=500/] .[pause=800/] ¡A <size=115%><color=\#42b6f5>Nivalia</color></size> y a <size=115%><color=\#f5b042>Solaris</color></size>!
-Radio: Y es que, después del exitoso referéndum realizado ayer para dictaminar la <i>división</i> del territorio...[pause=800/]
-Radio: ¡La acción se ha llevado a cabo gracias al <b><color=yellow>92%</color></b> de participación de la población y el <b><color=green>89%</color></b> de los votos a favor!
+Radio: Y es que, después del <b>exitoso</b> referéndum de ayer, la separación de nuestro país es casi una realidad.
+Radio: Todo el mundo está de acuerdo en que ser dos naciones independientes, pero aliadas, es el camino a seguir.
+Radio: <b>PERO...</b> [pause=800/] la burocracia nos pisa los talones.
+Radio: Según las leyes internacionales, ambos gobiernos tienen un plazo máximo de... [pause=600/] <b><color=red><size=120%>¡SOLO TRES DÍAS!</size></color></b>
+Radio: Tres días para firmar el acuerdo definitivo sobre el trazado de la frontera. Si el reloj llega a cero sin un acuerdo, la independencia se <b>ANULA</b> automáticamente durante cinco años.
+Radio: Y aquí es donde surge el verdadero dolor de cabeza diplomático: <b>La Zona Central</b>.
+Radio: Justo en el medio de nuestro todavía unificado país hay un punto único. El único lugar donde los minerales y la tecnología del Norte se encuentran de frente con la tierra fértil y la agricultura del Sur.
+Radio: Quien logre que la nueva frontera englobe esa zona central, se queda con el premio gordo. Tendría recursos de ambas partes y dejaría de depender de su vecino.
+Radio: En el corazón exacto de esa zona se encuentra una conocida taberna. Y como aún es territorio sin clasificar, se ha convertido en el único terreno neutral posible para las reuniones.
+Radio: Nos informan que los altos cargos ya están de camino hacia ese mismo local para discutir los mapas. 
+Radio: Hablamos de la élite: el Cartógrafo Jefe, líderes del Sindicato Agrícola, ejecutivos de suministros, ingenieros... Los egos más grandes de las dos regiones van a estar compartiendo mesa y mantel.
+Radio: Un pequeño aviso de servicio público para quien esté al mando de esa barra: ¡mucho cuidado con lo que sirven!
+Radio: Recuerden que los ciudadanos de Nivalia llevan generaciones a base de comida sintética; su estómago es delicado y exigen elaboraciones muy simples, sin salsas. 
+Radio: Por el contrario, a los de Solaris sírvanles comida real, fresca, bien asada y cargada de todas las especias posibles. ¡Un error en el menú podría causar un conflicto internacional!
+Radio: ¿Conseguirán los diplomáticos aparcar su avaricia y trazar la frontera antes de que acabe el tiempo?
+Radio: ¡El reloj ya está en marcha! ¡Buena suerte a todos!
 ===
 
 title: Radio_Dia2
 ---
-Radio: Amanece un segundo día radiante en el pueblo.
-// Aquí metemos la lógica dinámica según el día anterior
-<<if $tension > 10>>
-    Radio: Se comenta que ayer la taberna estuvo llena hasta la bandera.
+Radio: ¡Muy buenos días! O no tan buenos para algunos... [pause=500/] Entramos en el <b>segundo día</b> del plazo límite.
+Radio: Quedan menos de 48 horas para que se cierre el acuerdo fronterizo, y los rumores que nos llegan desde la taberna de la Zona Central son, cuanto menos, interesantes.
+
+<<if $reputation <= 40>>
+    Radio: Parece que la disciplina y la frialdad de <b><color=\#42b6f5>Nivalia</color></b> están dominando las mesas de negociación. 
+    Radio: Nuestras fuentes afirman que los diplomáticos del Norte están muy cómodos y tienen la sartén por el mango.
+    Radio: Si esto sigue así, los cartógrafos norteños podrían anexionarse el territorio central sin apenas oposición. ¡Solaris va a tener que espabilar si no quiere perder el acceso a los minerales!
+<<elseif $reputation <= 59>>
+    Radio: De momento, las negociaciones son un auténtico tira y afloja. Una balanza perfectamente equilibrada.
+    Radio: Ni el Norte cede un milímetro de sus exigencias minerales, ni el Sur renuncia a su control agrícola. 
+    Radio: El ambiente en la Zona Central es tenso, pero <b>neutral</b>. Todo sigue en el aire y cualquier pequeño roce podría decantar la balanza o romper el pacto para siempre.
 <<else>>
-    Radio: Parece que ayer el ambiente estuvo algo tranquilo...
+    Radio: ¡El calor de <b><color=\#f5b042>Solaris</color></b> se hace notar con fuerza! 
+    Radio: Nos cuentan que el ambiente en la Zona Central es una fiesta sureña. Los líderes de Solaris están llevando la voz cantante en las discusiones.
+    Radio: El Sur parece acariciar la victoria para quedarse con la frontera central. Si Nivalia no endurece su postura, podrían quedarse a merced de los agricultores.
 <<endif>>
+
+Radio: Sea como sea, el reloj no perdona. ¡Aprovechen este segundo día, porque el tiempo vuela!
 ===
 
 title: Radio_Dia3
 ---
-Radio: Tercer y último día de la semana. El cielo está encapotado.
-<<if $dinero_total > 50>>
-    Radio: ¡La economía local va viento en popa gracias a vuestras compras!
+Radio: ¡Atención a todos los ciudadanos! [pause=500/] Hemos llegado al <b><color=red>ÚLTIMO DÍ</color><color=red>A</color></b>. 
+Radio: En apenas unas horas, el plazo de tres días llegará a cero. Hoy se decide el futuro de nuestras dos naciones.
+Radio: La presión en la taberna central debe ser asfixiante. Echemos un vistazo a las últimas previsiones...
+
+<<if $reputation <= 40>>
+    Radio: Las apuestas dan como clara ganadora a <b><color=\#42b6f5>Nivalia</color></b>.
+    Radio: Los ingenieros del Norte ya están hablando de instalar tuberías de vapor en la Zona Central. Han arrinconado diplomáticamente al Sur, que ve cómo la zona se les escapa de las manos.
+    Radio: Ocurre un milagro hoy, o el hielo y la maquinaria se tragarán el centro del país.
+<<elseif $reputation <= 59>>
+    Radio: Histórico. [pause=300/] Es la única palabra para describirlo. Llegamos al final del plazo en un <b>empate técnico absoluto</b>.
+    Radio: La diplomacia está brillando. Nadie ha logrado pisar al otro y el respeto (o el miedo) mantiene la frontera exactamente en el centro.
+    Radio: Si logran aguantar este frágil equilibrio de neutralidad hasta la medianoche, podríamos estar ante el acuerdo más justo de nuestra historia.
+<<else>>
+    Radio: Todo apunta a una victoria arrolladora de <b><color=\#f5b042>Solaris</color></b>.
+    Radio: Las encuestas dicen que la Zona Central pasará a ser territorio del Sur esta misma noche. Los delegados norteños apenas pueden meter baza ante la confianza arrolladora de los líderes agrícolas.
+    Radio: El Norte tiembla ante la idea de depender del Sur para comer. Hoy es su última oportunidad para darle la vuelta a los mapas.
 <<endif>>
-<<if $hubo_pelea>>
-    Radio: Todavía quedan cristales en la calle por la pelea de anoche...
-<<endif>>
+
+Radio: A quien regente esa taberna, solo podemos decirle una cosa: aguante la respiración. ¡Hoy se hace historia!
 ===
 
 title: Radio_Final
 ---
-Radio: Y con esto cerramos la semana. 
-// Aquí puedes poner el resumen final basado en todo lo acumulado
-Radio: Gracias por sintonizarnos.
+Radio: ¡Ciudadanos! [pause=500/] <b><size=120%>El plazo ha terminado.</size></b>
+Radio: El reloj ha llegado a cero. Los líderes han salido de la taberna y ya tenemos la resolución oficial del tratado fronterizo.
+
+<<if $reputation <= 40>>
+    Radio: <b><color=\#42b6f5>Nivalia</color> absorbe la Zona Central.</b>
+    Radio: El Norte ha impuesto sus condiciones de forma rotunda. La taberna y todos sus recursos pasan a ser territorio soberano norteño.
+    Radio: El Norte asegura su supervivencia energética y alimenticia... pero son noticias devastadoras para Solaris. Sin acceso a la tecnología central de desalinización y con la frontera sellada, se avecinan meses de sequía letal para el Sur. 
+    Radio: El frío invierno se impone. Que las máquinas nos amparen.
+<<elseif $reputation <= 59>>
+    Radio: <b>¡Acuerdo de Neutralidad!</b>
+    Radio: En un despliegue de diplomacia sin precedentes, ambos bandos han firmado el pacto.
+    Radio: La frontera se queda intacta y la taberna ha sido declarada oficialmente <b>Suelo Soberano Independiente</b>. 
+    Radio: Seguiremos compartiendo el comercio, la comida y el agua de forma equitativa. Se abre una era de prosperidad mutua, y todo gracias a la impecable gestión neutral de la Zona Central. ¡Larga vida a los nuevos países aliados!
+<<else>>
+    Radio: <b><color=\#f5b042>Solaris</color> anexa la Zona Central.</b>
+    Radio: El Sur ha aplastado las negociaciones. Han desplazado la frontera hacia el norte, quedándose con la taberna y los yacimientos minerales estratégicos.
+    Radio: Solaris ahora controla la comida y la maquinaria de agua. ¿Pero Nivalia? Aislada en sus montañas y sin alimentos orgánicos, se enfrentan a una hambruna sin precedentes.
+    Radio: Los campos de oro han vencido al hielo. Que el sol ilumine esta nueva era.
+<<endif>>
+
+Radio: Así queda escrito el destino de nuestra tierra. Gracias por sintonizarnos durante estos tres tensos días. [pause=800/] Fin de la emisión.
 ===
