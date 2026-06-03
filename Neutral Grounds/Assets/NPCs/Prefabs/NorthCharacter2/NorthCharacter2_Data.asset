@@ -10,18 +10,18 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 681a1fe18de8efc479e922a9d465f6d0, type: 3}
-  m_Name: NorthCharacter_Data
+  m_Name: NorthCharacter2_Data
   m_EditorClassIdentifier: 
-  characterName: Vladimir Hills
+  characterName: Alex White
   faction: 0
   foodPreference: 0
-  trait: 1
+  trait: 0
   isVIP: 0
   vipIdentity: 0
   maxPatience: 100
   noiseSensitivity: 0
   happyConversations:
-  - {fileID: 6266778389797047581, guid: 7e1699cc277ccd4488cbb68d0d852d5d, type: 3}
+  - {fileID: 6793727823744473624, guid: 46fffa7b943e9764194e8c95dffb1d34, type: 3}
   angryConversations:
-  - {fileID: 699282537826021455, guid: 6881b3b032f430643802dd7f89d33f57, type: 3}
-  alreadyKnownConversation: {fileID: 6670247888894703631, guid: 8d97ac2c9d0544d48b9f5c731c0689ba, type: 3}
+  - {fileID: 2731310898112842712, guid: e33408a2a4b0d054fa0063c2cc0acf4c, type: 3}
+  alreadyKnownConversation: {fileID: 69262874710317048, guid: 0fcc4d202b800ec42aae2ea3533eab08, type: 3}

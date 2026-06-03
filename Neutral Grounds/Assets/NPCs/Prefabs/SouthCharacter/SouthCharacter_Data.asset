@@ -10,18 +10,18 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 681a1fe18de8efc479e922a9d465f6d0, type: 3}
-  m_Name: NorthCharacter_Data
+  m_Name: SouthCharacter_Data
   m_EditorClassIdentifier: 
-  characterName: Vladimir Hills
-  faction: 0
-  foodPreference: 0
-  trait: 1
+  characterName: Diego Puerto
+  faction: 1
+  foodPreference: 1
+  trait: 0
   isVIP: 0
   vipIdentity: 0
   maxPatience: 100
   noiseSensitivity: 0
   happyConversations:
-  - {fileID: 6266778389797047581, guid: 7e1699cc277ccd4488cbb68d0d852d5d, type: 3}
+  - {fileID: 8480108540106942215, guid: c552dc5d481ca594ca6236ea1e8c157c, type: 3}
   angryConversations:
-  - {fileID: 699282537826021455, guid: 6881b3b032f430643802dd7f89d33f57, type: 3}
-  alreadyKnownConversation: {fileID: 6670247888894703631, guid: 8d97ac2c9d0544d48b9f5c731c0689ba, type: 3}
+  - {fileID: 3962177715766343331, guid: bae8e53c5289288448a97e7bcdd00bff, type: 3}
+  alreadyKnownConversation: {fileID: 3950082881314791317, guid: e92909569626e694aa0fa4a86de8c2cd, type: 3}
