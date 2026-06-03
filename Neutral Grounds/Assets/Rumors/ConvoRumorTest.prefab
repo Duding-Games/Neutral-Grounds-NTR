@@ -46,7 +46,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   CurrentIDCounter: 1
-  json: "{\"Options\":[],\"Parameters\":[],\"SpeechNodes\":[{\"Connections\":[],\"EditorInfo\":{\"isRoot\":true,\"xPos\":367.5,\"yPos\":41},\"ID\":0,\"ParamActions\":[],\"TMPFontGUID\":null,\"Text\":\"Psst,
+  json: "{\"Options\":[],\"Parameters\":[],\"SpeechNodes\":[{\"Connections\":[],\"EditorInfo\":{\"isRoot\":true,\"xPos\":368.5,\"yPos\":22},\"ID\":0,\"ParamActions\":[],\"TMPFontGUID\":null,\"Text\":\"Psst,
     oye... no le digas a nadie que van a cerrar la frontera ma\xF1ana.\",\"parentUIDs\":[],\"AdvanceDialogueAutomatically\":false,\"AudioGUID\":null,\"AutoAdvanceShouldDisplayOption\":false,\"IconGUID\":null,\"Name\":\"Cliente
     del Norte\",\"OptionUIDs\":null,\"SpeechUID\":0,\"TimeUntilAdvance\":0,\"Volume\":0}]}"
   saveVersion: 110
@@ -62,7 +62,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 11400000, guid: c9cd0e7b923097a468b65a25d0f0a52d, type: 2}
         m_TargetAssemblyTypeName: RumorData, Assembly-CSharp
-        m_MethodName: TriggerLearnRumor
+        m_MethodName: TriggerRumor
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -121,7 +121,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 11400000, guid: c9cd0e7b923097a468b65a25d0f0a52d, type: 2}
         m_TargetAssemblyTypeName: RumorData, Assembly-CSharp
-        m_MethodName: TriggerLearnRumor
+        m_MethodName: TriggerRumor
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}

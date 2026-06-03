@@ -17,4 +17,8 @@ MonoBehaviour:
   northPatienceChange: -20
   southPatienceChange: 15
   northReactionChat: {fileID: 8754683447888317010, guid: 5d1d16b97d0474045b6c11eeb6d6c23c, type: 3}
-  southReactionChat: {fileID: 0}
+  southReactionChat: {fileID: 8754683447888317010, guid: 5d1d16b97d0474045b6c11eeb6d6c23c, type: 3}
+  viktorReactionChat: {fileID: 8754683447888317010, guid: 5d1d16b97d0474045b6c11eeb6d6c23c, type: 3}
+  valeriaReactionChat: {fileID: 8754683447888317010, guid: 5d1d16b97d0474045b6c11eeb6d6c23c, type: 3}
+  irinaReactionChat: {fileID: 8754683447888317010, guid: 5d1d16b97d0474045b6c11eeb6d6c23c, type: 3}
+  lorenzoReactionChat: {fileID: 8754683447888317010, guid: 5d1d16b97d0474045b6c11eeb6d6c23c, type: 3}
