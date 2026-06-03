@@ -24,14 +24,16 @@ public class GameManager : MonoBehaviour
 
     [Header("Settings")]
     public int maxDays = 3;
-    [Tooltip("Duration of the day in seconds (e.g., 300 for 5 mins)")]
     public float dayDurationSeconds = 30f; 
     private float dayTimer;
 
+    // --- NUEVO: SISTEMA DE REPUTACIÓN GLOBAL ---
+    [Header("Reputation System")]
+    [Tooltip("50 = Neutral. <40 = Gana Norte. >59 = Gana Sur")]
+    public int globalReputation = 50;
+
     [Header("UI References")]
-    [Tooltip("A Canvas Group attached to a black Panel covering the screen")]
     public CanvasGroup transitionScreen; 
-    [Tooltip("A text element to show 'Day 1', etc.")]
     public TextMeshProUGUI transitionText; 
     public float fadeSpeed = 1f;
 
@@ -76,6 +78,13 @@ public class GameManager : MonoBehaviour
     public void RegisterCustomer() { activeCustomerCount++; }
     public void UnregisterCustomer() { activeCustomerCount--; }
 
+    public void ModifyReputation(int amount)
+    {
+        globalReputation += amount;
+        globalReputation = Mathf.Clamp(globalReputation, 0, 100);
+        Debug.Log($"[Reputación] Cambio de {amount}. Reputación actual: {globalReputation}");
+    }
+
     private IEnumerator StartDaySequence()
     {
         currentState = GameState.MorningBriefing;
@@ -94,6 +103,9 @@ public class GameManager : MonoBehaviour
         if (dialogueRunner != null)
         {
             variableStorage.SetValue("$currentDay", currentDay);
+            
+            ActualizarDatosParaRadio(); 
+            
             dialogueRunner.StartDialogue("RadioMorning");
             yield return null;
 
@@ -129,11 +141,11 @@ public class GameManager : MonoBehaviour
             StartCoroutine(StartDaySequence());
         }
     }
+
     public void ActualizarDatosParaRadio()
     {
-        int reputation = 15;
-
-        variableStorage.SetValue("$reputation", reputation);
+        // En lugar de forzar un 15, le pasamos la variable global al Yarn Spinner
+        variableStorage.SetValue("$reputation", globalReputation);
     }
 
     private IEnumerator FadeScreen(float targetAlpha)

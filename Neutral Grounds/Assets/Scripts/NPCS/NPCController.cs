@@ -112,14 +112,12 @@ public class NPCController : MonoBehaviour
         if (foodServed == data.foodPreference)
         {
             ModifyPatience(20f);
-            if (meshRenderer != null) meshRenderer.material.color = Color.green;
             currentState = NPCState.Eating;
             currentEatingTimer = timeToEat; 
         }
         else
         {
             ModifyPatience(-40f); 
-            if (meshRenderer != null) meshRenderer.material.color = Color.red;
             GetAngryAndLeave(); 
         }
     }

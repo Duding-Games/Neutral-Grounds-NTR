@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6925606216588847970}
   - component: {fileID: 3870092394543573250}
+  - component: {fileID: 3300369080421190307}
   m_Layer: 0
   m_Name: Viktor_Happy1
   m_TagString: Untagged
@@ -46,7 +47,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   CurrentIDCounter: 7
-  json: "{\"Options\":[{\"Connections\":[{\"__type\":\"EditableSpeechConnection:#DialogueEditor\",\"Conditions\":[],\"NodeUID\":4}],\"EditorInfo\":{\"isRoot\":false,\"xPos\":138,\"yPos\":180},\"ID\":1,\"ParamActions\":[],\"TMPFontGUID\":null,\"Text\":\"Tienes
+  json: "{\"Options\":[{\"Connections\":[{\"__type\":\"EditableSpeechConnection:#DialogueEditor\",\"Conditions\":[],\"NodeUID\":4}],\"EditorInfo\":{\"isRoot\":false,\"xPos\":137,\"yPos\":175},\"ID\":1,\"ParamActions\":[],\"TMPFontGUID\":null,\"Text\":\"Tienes
     raz\xF3n. Si pusiera las mesas en cuadr\xEDcula, cabr\xEDa un 15% m\xE1s de clientes
     y el servicio ser\xEDa m\xE1s r\xE1pido\",\"parentUIDs\":[0],\"SpeechUID\":-1},{\"Connections\":[{\"__type\":\"EditableSpeechConnection:#DialogueEditor\",\"Conditions\":[],\"NodeUID\":5}],\"EditorInfo\":{\"isRoot\":false,\"xPos\":376,\"yPos\":179},\"ID\":2,\"ParamActions\":[],\"TMPFontGUID\":null,\"Text\":\"El
     caos le da vida al lugar. La gente prefiere sentarse como quiere, cerca del ruido
@@ -55,14 +56,14 @@ MonoBehaviour:
     geometr\xEDa de esta sala es... tolerable. Aunque la distribuci\xF3n de sus mesas
     delata una absoluta falta de planificaci\xF3n espacial. D\xEDgame, tabernero,
     \xBFnunca ha pensado en optimizar este caos?\",\"parentUIDs\":[],\"AdvanceDialogueAutomatically\":false,\"AudioGUID\":null,\"AutoAdvanceShouldDisplayOption\":false,\"IconGUID\":null,\"Name\":\"Viktor
-    Krell\",\"OptionUIDs\":null,\"SpeechUID\":0,\"TimeUntilAdvance\":0,\"Volume\":0},{\"Connections\":[],\"EditorInfo\":{\"isRoot\":false,\"xPos\":134,\"yPos\":302},\"ID\":4,\"ParamActions\":[],\"TMPFontGUID\":null,\"Text\":\"Exacto.
+    Krell\",\"OptionUIDs\":null,\"SpeechUID\":0,\"TimeUntilAdvance\":0,\"Volume\":0},{\"Connections\":[],\"EditorInfo\":{\"isRoot\":false,\"xPos\":135,\"yPos\":278},\"ID\":4,\"ParamActions\":[],\"TMPFontGUID\":null,\"Text\":\"Exacto.
     Eficiencia. Es un alivio encontrar a alguien en este l\xEDmite geogr\xE1fico
     que comprende el valor de la estructura. Quiz\xE1s este lado de la barrera no
     est\xE9 del todo perdido.\",\"parentUIDs\":[1],\"AdvanceDialogueAutomatically\":false,\"AudioGUID\":null,\"AutoAdvanceShouldDisplayOption\":false,\"IconGUID\":null,\"Name\":\"Viktor
-    Krell\",\"OptionUIDs\":null,\"SpeechUID\":0,\"TimeUntilAdvance\":0,\"Volume\":0},{\"Connections\":[],\"EditorInfo\":{\"isRoot\":false,\"xPos\":372,\"yPos\":301},\"ID\":5,\"ParamActions\":[],\"TMPFontGUID\":null,\"Text\":\"Vida...
+    Krell\",\"OptionUIDs\":null,\"SpeechUID\":0,\"TimeUntilAdvance\":0,\"Volume\":0},{\"Connections\":[],\"EditorInfo\":{\"isRoot\":false,\"xPos\":375,\"yPos\":288},\"ID\":5,\"ParamActions\":[],\"TMPFontGUID\":null,\"Text\":\"Vida...
     Usted confunde 'vida' con 'descontrol'. Esa es la misma mentalidad defectuosa
     que pudre al Sur. Un error de c\xE1lculo que no pienso tolerar en mis mapas.\",\"parentUIDs\":[2],\"AdvanceDialogueAutomatically\":false,\"AudioGUID\":null,\"AutoAdvanceShouldDisplayOption\":false,\"IconGUID\":null,\"Name\":\"Viktor
-    Krell\",\"OptionUIDs\":null,\"SpeechUID\":0,\"TimeUntilAdvance\":0,\"Volume\":0},{\"Connections\":[],\"EditorInfo\":{\"isRoot\":false,\"xPos\":629,\"yPos\":298},\"ID\":6,\"ParamActions\":[],\"TMPFontGUID\":null,\"Text\":\"Son...
+    Krell\",\"OptionUIDs\":null,\"SpeechUID\":0,\"TimeUntilAdvance\":0,\"Volume\":0},{\"Connections\":[],\"EditorInfo\":{\"isRoot\":false,\"xPos\":632,\"yPos\":293},\"ID\":6,\"ParamActions\":[],\"TMPFontGUID\":null,\"Text\":\"Son...
     c\xE1lculos topogr\xE1ficos, s\xED. Y anotaciones antiguas. Mi padre me ense\xF1\xF3
     que un mapa nunca miente, pero los que los dibujan... a veces s\xED. Especialmente
     si son del Sur.\",\"parentUIDs\":[3],\"AdvanceDialogueAutomatically\":false,\"AudioGUID\":null,\"AutoAdvanceShouldDisplayOption\":false,\"IconGUID\":null,\"Name\":\"Viktor
@@ -83,7 +84,31 @@ MonoBehaviour:
   EndConversationFont: {fileID: 0}
   Event:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 3300369080421190307}
+        m_TargetAssemblyTypeName: ReputationTrigger, Assembly-CSharp
+        m_MethodName: ApplyReputation
+        m_Mode: 3
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: -5
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+--- !u!114 &3300369080421190307
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2463931892210961941}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 17535a05b00598c43a4d85f1c4ddfdd9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &4412852290816327161
 GameObject:
   m_ObjectHideFlags: 0
@@ -260,7 +285,19 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Event:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 3300369080421190307}
+        m_TargetAssemblyTypeName: ReputationTrigger, Assembly-CSharp
+        m_MethodName: ApplyReputation
+        m_Mode: 3
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 5
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
   NodeID: 4
   TMPFont: {fileID: 0}
   Icon: {fileID: 21300000, guid: c86a190fe733045418add4264cf56c8b, type: 3}
@@ -279,7 +316,19 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Event:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 3300369080421190307}
+        m_TargetAssemblyTypeName: ReputationTrigger, Assembly-CSharp
+        m_MethodName: ApplyReputation
+        m_Mode: 3
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: -5
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
   NodeID: 5
   TMPFont: {fileID: 0}
   Icon: {fileID: 21300000, guid: c86a190fe733045418add4264cf56c8b, type: 3}
