@@ -16,6 +16,8 @@ MonoBehaviour:
   faction: 0
   foodPreference: 0
   trait: 3
+  isVIP: 0
+  vipIdentity: 0
   maxPatience: 100
   noiseSensitivity: 0
   happyConversations:
@@ -24,3 +26,4 @@ MonoBehaviour:
   angryConversations:
   - {fileID: 1687740161339307271, guid: e2af39b0c62356a428f55b0f2b72dcca, type: 3}
   - {fileID: 5642285903578927392, guid: e5ada97e33ee4c74f826a12637c52747, type: 3}
+  alreadyKnownConversation: {fileID: 6071361301300759709, guid: 45258e3db50685547a3f30cac2c93fbf, type: 3}
