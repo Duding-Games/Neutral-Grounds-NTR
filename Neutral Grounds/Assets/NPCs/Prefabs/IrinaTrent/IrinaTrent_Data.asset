@@ -20,6 +20,7 @@ MonoBehaviour:
   vipIdentity: 3
   maxPatience: 100
   noiseSensitivity: 25
-  happyConversations: []
+  happyConversations:
+  - {fileID: 4368769993058542624, guid: 4d623a2be47a8464bbe925ef29be5b4a, type: 3}
   angryConversations: []
   alreadyKnownConversation: {fileID: 0}

@@ -1,0 +1,26 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 036c44920e018be4387789f80a267d3e, type: 3}
+  m_Name: "Desaparici\xF3nKira"
+  m_EditorClassIdentifier: 
+  rumorName: "Desaparici\xF3n Kira"
+  description: "Se rumorea que la madre de Viktor Krell desapareci\xF3 misteriosamente."
+  rumorSound: {fileID: 8300000, guid: cb4aa734f00c7e14ca551d04ac349659, type: 3}
+  rumorVolume: 1
+  northPatienceChange: 0
+  southPatienceChange: 0
+  northReactionChat: {fileID: 8381208144315658450, guid: 5a4497c0a4ff5bb41a08bdffe0d205f9, type: 3}
+  southReactionChat: {fileID: 1731532290395569468, guid: ebbed7b8c64610644939b7394e4785bf, type: 3}
+  viktorReactionChat: {fileID: 4705378436016246125, guid: dee1ead755e78ff41a9cfeab6305f4e9, type: 3}
+  valeriaReactionChat: {fileID: 0}
+  irinaReactionChat: {fileID: 0}
+  lorenzoReactionChat: {fileID: 0}
