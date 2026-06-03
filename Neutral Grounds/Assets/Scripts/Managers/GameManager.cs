@@ -89,7 +89,7 @@ public class GameManager : MonoBehaviour
     {
         currentState = GameState.MorningBriefing;
         
-        if (transitionText != null) transitionText.text = "Day " + currentDay;
+        if (transitionText != null) transitionText.text = "Día " + currentDay;
 
         yield return FadeScreen(1f); 
 
