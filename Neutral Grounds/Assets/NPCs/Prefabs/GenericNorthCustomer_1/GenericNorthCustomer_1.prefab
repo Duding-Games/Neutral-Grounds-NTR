@@ -206,7 +206,7 @@ MonoBehaviour:
   patienceLossPerSecond: 5
   timeToEat: 3
   patienceBar: {fileID: 7779425842280044616}
-  happyParticlePrefab: {fileID: 0}
+  happyParticlePrefab: {fileID: 4256131360299253203, guid: 23204fcf25c28584fb63899de000dd09, type: 3}
   angryParticlePrefab: {fileID: 0}
   agent: {fileID: 6050938433935070725}
   tavernEntry: {fileID: 0}
